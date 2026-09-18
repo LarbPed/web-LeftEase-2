@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeftEase — ของถนัดมือ สำหรับคนถนัดซ้าย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#10323B;
+  --ink-soft:#4A6A72;
+  --primary:#166E7E;
+  --primary-dark:#0F515D;
+  --mint:#D6EFE8;
+  --mint-deep:#A8DBCE;
+  --accent:#E8763C;
+  --accent-soft:#FBE7DA;
+  --bg:#FFFFFF;
+  --surface:#F3F7F6;
+  --line:#DCE7E5;
+  --card:#FFFFFF;
+  --shadow:0 1px 2px rgba(16,50,59,.06), 0 8px 24px rgba(16,50,59,.05);
+  --star:#E2A32B;
+  --r-lg:20px; --r-md:14px; --r-sm:9px;
+  --maxw:1180px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#E6F1EF; --ink-soft:#9DB5B6; --primary:#5FBFC4; --primary-dark:#8AD6D6;
+    --mint:#1B3A40; --mint-deep:#2A555C; --accent:#F3945F; --accent-soft:#3A2519;
+    --bg:#0D1F24; --surface:#12292F; --line:#22424A; --card:#12292F;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E6F1EF; --ink-soft:#9DB5B6; --primary:#5FBFC4; --primary-dark:#8AD6D6;
+  --mint:#1B3A40; --mint-deep:#2A555C; --accent:#F3945F; --accent-soft:#3A2519;
+  --bg:#0D1F24; --surface:#12292F; --line:#22424A; --card:#12292F;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Noto Sans Thai","IBM Plex Sans Thai",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.display{font-family:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;line-height:1.3;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(2rem,5vw,3.35rem);font-weight:700}
+h2{font-size:clamp(1.4rem,3vw,2.05rem);font-weight:600}
+h3{font-size:1.12rem;font-weight:600}
+p{margin:0 0 1rem}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+img,svg{max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--accent);color:#fff;padding:10px 16px;z-index:200}
+.skip:focus{left:8px;top:8px}
+
+/* ---------- header ---------- */
+header.site{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:18px;height:68px}
+.logo{display:flex;align-items:center;gap:9px;font-family:"IBM Plex Sans Thai",sans-serif;font-weight:700;font-size:1.3rem;color:var(--ink);text-decoration:none;flex:none}
+.logo:hover{text-decoration:none}
+.logo .mark{width:30px;height:30px;display:block}
+.nav{display:flex;gap:4px;margin-inline-end:auto;flex-wrap:wrap}
+.nav a{padding:7px 12px;border-radius:var(--r-sm);color:var(--ink-soft);font-size:.95rem}
+.nav a:hover{background:var(--surface);color:var(--ink);text-decoration:none}
+.nav a[aria-current="page"]{color:var(--primary);background:var(--mint);font-weight:600}
+.tools{display:flex;align-items:center;gap:6px;flex:none}
+.iconbtn{position:relative;background:none;border:1px solid transparent;border-radius:var(--r-sm);width:40px;height:40px;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.iconbtn:hover{background:var(--surface)}
+.badge{position:absolute;top:1px;inset-inline-end:1px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:var(--accent);color:#fff;font-size:.7rem;line-height:18px;text-align:center;font-weight:600}
+.menu-toggle{display:none}
+@media(max-width:860px){
+  .nav{position:absolute;top:68px;inset-inline:0;background:var(--bg);border-bottom:1px solid var(--line);flex-direction:column;padding:10px 20px 16px;display:none}
+  .nav.open{display:flex}
+  .menu-toggle{display:grid}
+  .bar{gap:10px}
+}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:var(--r-sm);padding:11px 20px;font-weight:600;font-size:.97rem;cursor:pointer;background:var(--primary);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--primary-dark);text-decoration:none;color:#fff}
+.btn:active{transform:translateY(1px)}
+.btn.accent{background:var(--accent)}
+.btn.accent:hover{background:#CE6330}
+.btn.ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+.btn.ghost:hover{background:var(--surface);color:var(--ink)}
+.btn.sm{padding:8px 14px;font-size:.88rem}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* ---------- hero ---------- */
+.hero{background:var(--surface);border-bottom:1px solid var(--line);overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:64px 0 60px}
+@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:32px;padding:44px 0}}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--mint);color:var(--primary-dark);padding:6px 13px;border-radius:99px;font-size:.85rem;font-weight:600;margin-bottom:18px}
+.hero h1 .flip{display:inline-block;transform:scaleX(-1);color:var(--accent)}
+.hero-lead{font-size:1.1rem;color:var(--ink-soft);max-width:46ch}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.hero-stats{display:flex;gap:28px;margin-top:38px;flex-wrap:wrap}
+.hero-stats div strong{display:block;font-family:"IBM Plex Sans Thai";font-size:1.5rem;color:var(--primary)}
+.hero-stats div span{font-size:.86rem;color:var(--ink-soft)}
+.hero-art{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shadow)}
+.mirror{display:grid;grid-template-columns:1fr 1px 1fr;gap:16px;align-items:center}
+.mirror .side{text-align:center;padding:14px 8px}
+.mirror .rule{background:repeating-linear-gradient(var(--line) 0 6px,transparent 6px 12px);width:1px;height:100%}
+.mirror .side h4{font-size:.95rem;margin-bottom:6px}
+.mirror .side p{font-size:.84rem;color:var(--ink-soft);margin:0}
+.mirror .bad h4{color:var(--ink-soft)}
+.mirror .good h4{color:var(--primary)}
+.mirror svg{width:74px;height:74px;margin-bottom:10px}
+.mirror .bad svg{transform:scaleX(-1);opacity:.45}
+
+/* ---------- sections ---------- */
+section.block{padding:62px 0}
+.sec-head{margin-bottom:28px;max-width:60ch}
+.sec-head p{color:var(--ink-soft);margin:8px 0 0}
+.sec-head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+
+/* ---------- category ---------- */
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:900px){.cats{grid-template-columns:repeat(2,1fr)}}
+.cat{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:18px;text-align:start;cursor:pointer;color:var(--ink);transition:border-color .15s,transform .15s}
+.cat:hover{border-color:var(--mint-deep);transform:translateY(-2px);text-decoration:none;color:var(--ink)}
+.cat svg{width:34px;height:34px;color:var(--primary);margin-bottom:10px}
+.cat b{display:block;font-family:"IBM Plex Sans Thai";font-size:.98rem}
+.cat span{font-size:.8rem;color:var(--ink-soft)}
+
+/* ---------- product card ---------- */
+.grid-products{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:1000px){.grid-products{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.grid-products{grid-template-columns:repeat(2,1fr);gap:14px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .18s,border-color .18s}
+.card:hover{box-shadow:var(--shadow);border-color:var(--mint-deep)}
+.card .thumb{display:block;background:var(--mint);aspect-ratio:1/1;position:relative}
+.card .thumb svg{width:100%;height:100%;display:block}
+.card .body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card .name{font-family:"IBM Plex Sans Thai";font-weight:600;font-size:.98rem;color:var(--ink);line-height:1.45}
+.card .name:hover{color:var(--primary);text-decoration:none}
+.card .rate{font-size:.82rem;color:var(--ink-soft);display:flex;align-items:center;gap:5px}
+.card .price{font-family:"IBM Plex Sans Thai";font-weight:700;font-size:1.12rem;margin-top:auto}
+.card .foot{display:flex;gap:8px;padding:0 14px 14px}
+.card .foot .btn{flex:1}
+.tag{position:absolute;top:10px;inset-inline-start:10px;background:var(--accent);color:#fff;font-size:.72rem;font-weight:600;padding:3px 9px;border-radius:99px}
+.tag.calm{background:var(--primary)}
+.tag.quiet{background:var(--card);color:var(--ink-soft);border:1px solid var(--line)}
+.wish{position:absolute;top:8px;inset-inline-end:8px;width:34px;height:34px;border-radius:99px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--ink-soft)}
+.wish[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
+.stars{color:var(--star);letter-spacing:1px}
+
+/* ---------- why ---------- */
+.why{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:900px){.why{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.why{grid-template-columns:1fr}}
+.why div{border-inline-start:3px solid var(--mint-deep);padding-inline-start:16px}
+.why h3{margin-bottom:6px}
+.why p{font-size:.92rem;color:var(--ink-soft);margin:0}
+
+/* ---------- reviews strip ---------- */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:860px){.quotes{grid-template-columns:1fr}}
+.quote{background:var(--surface);border-radius:var(--r-md);padding:22px}
+.quote p{font-size:.95rem}
+.quote footer{font-size:.85rem;color:var(--ink-soft)}
+
+/* ---------- shop layout ---------- */
+.shop{display:grid;grid-template-columns:250px 1fr;gap:32px;align-items:start;padding:34px 0 70px}
+@media(max-width:900px){.shop{grid-template-columns:1fr}}
+.filters{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:18px;position:sticky;top:86px}
+@media(max-width:900px){.filters{position:static}}
+.fgroup{padding-block:12px;border-bottom:1px solid var(--line)}
+.fgroup:last-child{border-bottom:0;padding-bottom:0}
+.fgroup h4{font-size:.9rem;margin-bottom:9px}
+.fgroup label{display:flex;align-items:center;gap:9px;font-size:.9rem;padding:3px 0;cursor:pointer;color:var(--ink-soft)}
+.fgroup input[type=checkbox],.fgroup input[type=radio]{accent-color:var(--primary);width:16px;height:16px}
+input[type=range]{width:100%;accent-color:var(--primary)}
+.field{width:100%;padding:10px 13px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--bg);color:var(--ink)}
+.searchbox{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.searchbox .field{flex:1;min-width:200px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;font-size:.9rem;color:var(--ink-soft)}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:var(--primary-dark);border:0;border-radius:99px;padding:5px 12px;font-size:.84rem;cursor:pointer}
+.empty{text-align:center;padding:60px 20px;color:var(--ink-soft);background:var(--surface);border-radius:var(--r-md)}
+
+/* ---------- product detail ---------- */
+.pd{display:grid;grid-template-columns:1fr 1fr;gap:44px;padding:30px 0 20px}
+@media(max-width:880px){.pd{grid-template-columns:1fr;gap:26px}}
+.gallery .main{background:var(--mint);border-radius:var(--r-lg);aspect-ratio:1/1;overflow:hidden}
+.gallery .main svg{width:100%;height:100%}
+.thumbs{display:flex;gap:10px;margin-top:10px}
+.thumbs button{width:70px;height:70px;border-radius:var(--r-sm);border:2px solid var(--line);background:var(--mint);overflow:hidden;cursor:pointer;padding:0}
+.thumbs button[aria-current="true"]{border-color:var(--primary)}
+.pd .price-row{display:flex;align-items:baseline;gap:12px;margin:14px 0}
+.pd .price-now{font-family:"IBM Plex Sans Thai";font-weight:700;font-size:2rem}
+.pd .price-old{color:var(--ink-soft);text-decoration:line-through}
+.qty{display:inline-flex;border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden}
+.qty button{width:40px;height:44px;border:0;background:var(--bg);cursor:pointer;font-size:1.1rem;color:var(--ink)}
+.qty button:hover{background:var(--surface)}
+.qty span{width:48px;display:grid;place-items:center;border-inline:1px solid var(--line)}
+.leftbox{background:var(--mint);border-radius:var(--r-md);padding:20px;margin:24px 0}
+.leftbox h3{display:flex;align-items:center;gap:8px;color:var(--primary-dark);margin-bottom:8px}
+.leftbox p{margin:0;font-size:.95rem}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.compare div{background:var(--card);border-radius:var(--r-sm);padding:12px;font-size:.88rem;border:1px solid var(--line)}
+.compare h5{margin:0 0 4px;font-size:.82rem;color:var(--ink-soft);font-weight:600;font-family:"IBM Plex Sans Thai"}
+table.specs{width:100%;border-collapse:collapse;font-size:.93rem}
+table.specs th,table.specs td{text-align:start;padding:10px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.specs th{width:38%;font-weight:500;color:var(--ink-soft)}
+.review{border-bottom:1px solid var(--line);padding:16px 0}
+.review:last-child{border-bottom:0}
+.review .head{display:flex;justify-content:space-between;gap:10px;font-size:.88rem;color:var(--ink-soft)}
+.review p{margin:6px 0 0;font-size:.95rem}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin:40px 0 20px;flex-wrap:wrap}
+.tabs button{border:0;background:none;padding:11px 16px;cursor:pointer;color:var(--ink-soft);font-weight:600;border-bottom:2px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--primary);border-bottom-color:var(--primary)}
+
+/* ---------- cart / checkout ---------- */
+.cart-grid{display:grid;grid-template-columns:1fr 340px;gap:30px;padding:30px 0 70px;align-items:start}
+@media(max-width:880px){.cart-grid{grid-template-columns:1fr}}
+.line{display:grid;grid-template-columns:88px 1fr auto;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);align-items:center}
+.line .pic{width:88px;height:88px;border-radius:var(--r-sm);background:var(--mint);overflow:hidden}
+.summary{background:var(--surface);border-radius:var(--r-md);padding:22px;position:sticky;top:86px}
+.summary .row{display:flex;justify-content:space-between;padding:7px 0;font-size:.95rem}
+.summary .total{border-top:1px solid var(--line);margin-top:10px;padding-top:14px;font-weight:700;font-size:1.15rem;font-family:"IBM Plex Sans Thai"}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr}}
+.form-grid .full{grid-column:1/-1}
+label.lbl{display:block;font-size:.88rem;margin-bottom:6px;color:var(--ink-soft)}
+fieldset{border:1px solid var(--line);border-radius:var(--r-md);padding:18px;margin:0 0 18px}
+legend{padding:0 8px;font-family:"IBM Plex Sans Thai";font-weight:600}
+.pay{display:flex;gap:10px;flex-wrap:wrap}
+.pay label{flex:1;min-width:140px;border:1px solid var(--line);border-radius:var(--r-sm);padding:12px;display:flex;gap:9px;align-items:center;cursor:pointer;font-size:.92rem}
+.pay input{accent-color:var(--primary)}
+
+/* ---------- tracking ---------- */
+.timeline{list-style:none;margin:24px 0 0;padding:0}
+.timeline li{display:grid;grid-template-columns:28px 1fr;gap:14px;padding-bottom:26px;position:relative}
+.timeline li::before{content:"";position:absolute;inset-inline-start:13px;top:26px;bottom:0;width:2px;background:var(--line)}
+.timeline li:last-child::before{display:none}
+.timeline .dot{width:28px;height:28px;border-radius:99px;background:var(--surface);border:2px solid var(--line);display:grid;place-items:center;color:var(--ink-soft)}
+.timeline li.done .dot{background:var(--primary);border-color:var(--primary);color:#fff}
+.timeline b{font-family:"IBM Plex Sans Thai"}
+.timeline small{color:var(--ink-soft)}
+
+/* ---------- articles ---------- */
+.arts{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media(max-width:860px){.arts{grid-template-columns:1fr}}
+.art{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;display:flex;flex-direction:column}
+.art .cover{height:130px;background:var(--mint);display:grid;place-items:center}
+.art .cover svg{width:52px;height:52px;color:var(--primary)}
+.art .body{padding:18px}
+.art .kicker{font-size:.8rem;color:var(--accent);font-weight:600}
+.art h3{margin:6px 0 8px}
+.art p{font-size:.9rem;color:var(--ink-soft);margin:0}
+.prose{max-width:68ch}
+.prose h3{margin:28px 0 8px}
+.prose li{margin-bottom:6px}
+
+/* ---------- faq ---------- */
+details.faq{border-bottom:1px solid var(--line);padding:16px 0}
+details.faq summary{cursor:pointer;font-family:"IBM Plex Sans Thai";font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"+";color:var(--primary);font-size:1.3rem;line-height:1}
+details.faq[open] summary::after{content:"–"}
+details.faq p{margin:10px 0 0;color:var(--ink-soft)}
+
+/* ---------- footer ---------- */
+footer.site{background:var(--surface);border-top:1px solid var(--line);padding:48px 0 30px;margin-top:40px}
+.fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px}
+@media(max-width:820px){.fgrid{grid-template-columns:1fr 1fr}}
+footer.site h4{font-size:.95rem;margin-bottom:10px}
+footer.site ul{list-style:none;margin:0;padding:0}
+footer.site li{margin-bottom:7px}
+footer.site a,footer.site p{font-size:.9rem;color:var(--ink-soft)}
+.copyright{border-top:1px solid var(--line);margin-top:34px;padding-top:18px;font-size:.85rem;color:var(--ink-soft);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* ---------- toast ---------- */
+#toast{position:fixed;inset-inline-end:20px;bottom:20px;z-index:120;display:flex;flex-direction:column;gap:10px}
+.toast{background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:var(--r-sm);box-shadow:var(--shadow);font-size:.92rem;display:flex;gap:10px;align-items:center}
+:root:not([data-theme="light"]) .toast{background:var(--primary);color:#062126}
+@media (prefers-reduced-motion:no-preference){
+  .toast{animation:pop .25s ease-out}
+  @keyframes pop{from{opacity:0;transform:translateY(8px)}}
+  .hero h1 .flip{animation:flipin .9s .25s ease-out both}
+  @keyframes flipin{from{transform:scaleX(1);opacity:.35}to{transform:scaleX(-1);opacity:1}}
+}
+.crumb{font-size:.86rem;color:var(--ink-soft);padding-top:18px}
+.badge-hand{display:inline-block;font-size:.78rem;padding:3px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+:root:not([data-theme="light"]) .badge-hand{color:var(--accent)}
+.note{font-size:.85rem;color:var(--ink-soft)}
+.overflow-x{overflow-x:auto}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">ข้ามไปเนื้อหาหลัก</a>
+
+<header class="site">
+  <div class="wrap bar">
+    <a class="logo" href="#/" aria-label="LeftEase หน้าแรก">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="9" fill="#166E7E"/>
+        <path d="M21 8v9.5a5.5 5.5 0 0 1-5.5 5.5H11" stroke="#D6EFE8" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M14 20l-3 3 3 3" stroke="#E8763C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      LeftEase
+    </a>
+    <button class="iconbtn menu-toggle" id="menuBtn" aria-label="เปิดเมนู" aria-expanded="false" aria-controls="mainnav">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="nav" id="mainnav" aria-label="เมนูหลัก">
+      <a href="#/">หน้าแรก</a>
+      <a href="#/shop">สินค้าทั้งหมด</a>
+      <a href="#/community">บทความ &amp; ชุมชน</a>
+      <a href="#/track">ติดตามคำสั่งซื้อ</a>
+      <a href="#/about">เกี่ยวกับเรา</a>
+      <a href="#/faq">คำถามที่พบบ่อย</a>
+    </nav>
+    <div class="tools">
+      <button class="iconbtn" id="themeBtn" aria-label="สลับโหมดสว่าง/มืด">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a class="iconbtn" href="#/wishlist" aria-label="รายการที่ถูกใจ">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 5.6a5.2 5.2 0 0 0-7.4 0L12 7l-1.4-1.4a5.2 5.2 0 1 0-7.4 7.4L12 21.5l8.8-8.5a5.2 5.2 0 0 0 0-7.4z"/></svg>
+        <span class="badge" id="wishCount" hidden>0</span>
+      </a>
+      <a class="iconbtn" href="#/cart" aria-label="ตะกร้าสินค้า">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.6 8.4a2 2 0 0 1-2 1.6H9.3a2 2 0 0 1-2-1.6L5.4 4H3"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="17.5" cy="20" r="1.4"/></svg>
+        <span class="badge" id="cartCount" hidden>0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1"></main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <h4>LeftEase</h4>
+        <p>ร้านรวมสินค้าสำหรับคนถนัดซ้าย คัดสรร ทดลองใช้ และอธิบายให้เข้าใจก่อนซื้อ</p>
+      </div>
+      <div>
+        <h4>ช้อป</h4>
+        <ul>
+          <li><a href="#/shop?cat=scissors">กรรไกร</a></li>
+          <li><a href="#/shop?cat=writing">อุปกรณ์การเขียน</a></li>
+          <li><a href="#/shop?cat=computer">คอมพิวเตอร์</a></li>
+          <li><a href="#/shop?cat=kitchen">เครื่องครัว</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>ช่วยเหลือ</h4>
+        <ul>
+          <li><a href="#/track">ติดตามคำสั่งซื้อ</a></li>
+          <li><a href="#/faq">คำถามที่พบบ่อย</a></li>
+          <li><a href="#/contact">ติดต่อเรา</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>เกี่ยวกับ</h4>
+        <ul>
+          <li><a href="#/about">เรื่องราวของเรา</a></li>
+          <li><a href="#/community">บทความ &amp; ชุมชน</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      <span>© 2026 LeftEase — ตัวอย่าง MVP เพื่อการเรียนรู้ ยังไม่มีการชำระเงินจริง</span>
+      <span>13 สิงหาคม — วันถนัดซ้ายสากล</span>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" aria-live="polite"></div>
+
+<script>
+/* ============ ICONS ============ */
+const I = {
+  scissors:'<circle cx="6" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12"/>',
+  writing:'<path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.6 7.6"/><circle cx="11" cy="11" r="2"/>',
+  ruler:'<path d="M16 2l6 6L8 22l-6-6z"/><path d="M7.5 10.5l2 2M11 7l2 2M4 14l2 2"/>',
+  computer:'<rect x="6" y="2" width="12" height="20" rx="6"/><path d="M12 6v4"/>',
+  kitchen:'<path d="M3 2v7a3 3 0 0 0 3 3h0a3 3 0 0 0 3-3V2"/><path d="M6 12v10"/><path d="M18 2c-2 3-3 5-3 8a3 3 0 0 0 6 0c0-3-1-5-3-8z"/><path d="M18 13v9"/>',
+  sports:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18M12 3a9 9 0 0 1 0 18"/>',
+  tools:'<path d="M14.7 6.3a4 4 0 0 0 5.3 5.3L21 21l-3 1-8.5-9.6a4 4 0 0 1-5.2-5.2L7 9l2-2-2.7-3.4z"/>',
+  lifestyle:'<path d="M17 8h3a3 3 0 0 1 0 6h-3"/><path d="M3 8h14v7a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5z"/><path d="M6 2v3M10 2v3M14 2v3"/>',
+  heart:'<path d="M20.8 5.6a5.2 5.2 0 0 0-7.4 0L12 7l-1.4-1.4a5.2 5.2 0 1 0-7.4 7.4L12 21.5l8.8-8.5a5.2 5.2 0 0 0 0-7.4z"/>',
+  check:'<path d="M20 6L9 17l-5-5"/>',
+  hand:'<path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v7M10 10.5V7a2 2 0 0 0-4 0v9"/><path d="M18 11v3a7 7 0 0 1-7 7h-.5A6.5 6.5 0 0 1 4 14.5V13"/>',
+  book:'<path d="M4 4h9a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4z"/><path d="M20 4h-4v13.5H20z"/>',
+  truck:'<path d="M2 6h11v11H2z"/><path d="M13 9h4l3 3.5V17h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/>',
+  box:'<path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
+  chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  star:'<path d="M12 2l3 6.5 7 .9-5 4.8 1.2 7-6.2-3.4L5.8 21 7 14.2 2 9.4l7-.9z"/>'
+};
+const ic = (n,s=22)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]||''}</svg>`;
+
+/* ============ DATA ============ */
+const CATS=[
+  {id:'scissors',name:'กรรไกร',icon:'scissors',note:'ใบมีดสลับด้าน'},
+  {id:'writing',name:'ปากกา & การเขียน',icon:'writing',note:'หมึกแห้งไว ไม่เลอะ'},
+  {id:'ruler',name:'สมุด & ไม้บรรทัด',icon:'ruler',note:'สเกลอ่านจากขวาไปซ้าย'},
+  {id:'computer',name:'เมาส์ & คอมพิวเตอร์',icon:'computer',note:'ทรงถนัดซ้ายแท้'},
+  {id:'kitchen',name:'อุปกรณ์เครื่องครัว',icon:'kitchen',note:'ปากรินและคมมีดกลับด้าน'},
+  {id:'sports',name:'อุปกรณ์กีฬา',icon:'sports',note:'ถุงมือและด้ามจับซ้าย'},
+  {id:'tools',name:'เครื่องมือช่าง',icon:'tools',note:'สเกลและสวิตช์ฝั่งซ้าย'},
+  {id:'lifestyle',name:'ของใช้ไลฟ์สไตล์',icon:'lifestyle',note:'ใช้ได้ถนัดทุกวัน'}
+];
+const catName = id => (CATS.find(c=>c.id===id)||{}).name || id;
+
+const R = (n,txt,name,d)=>({n,txt,name,d});
+const P=[
+ {id:'sc-01',name:'กรรไกรถนัดซ้าย Fiskars Softgrip 8 นิ้ว',en:'fiskars left handed scissors',price:690,old:790,cat:'scissors',rating:4.8,reviews:126,hand:'left',stock:24,tags:['ขายดี'],
+  short:'กรรไกรอเนกประสงค์ที่ใบมีดสลับด้านจริง ไม่ใช่แค่ด้ามจับ',
+  left:'ใบมีดบนอยู่ฝั่งซ้าย เมื่อบีบด้วยมือซ้ายแรงจะกดใบมีดเข้าหากันพอดี ทำให้มองเห็นเส้นตัดได้ชัดและกระดาษไม่พับหนีใบมีด',
+  vsRight:'กรรไกรทั่วไปจะบังเส้นตัดและทำให้กระดาษยับ เพราะแรงบีบของมือซ้ายดันใบมีดแยกออกจากกัน',
+  specs:{'ขนาด':'8 นิ้ว (21 ซม.)','วัสดุใบมีด':'สเตนเลสชุบแข็ง','ด้ามจับ':'Softgrip สำหรับมือซ้าย','น้ำหนัก':'118 กรัม','รับประกัน':'2 ปี'},
+  rv:[R(5,'ตัดกระดาษแล้วเห็นเส้นชัดมาก ครั้งแรกในชีวิตที่ไม่ต้องเอียงข้อมือ','ณัฐพล ว.','3 วันที่แล้ว'),R(5,'ซื้อให้ลูกใช้ที่โรงเรียน ลูกบอกว่าตัดง่ายกว่าของเดิมเยอะ','พิมพ์ชนก','2 สัปดาห์ที่แล้ว'),R(4,'ดีมาก แต่ราคาสูงกว่ากรรไกรทั่วไปพอควร','Somsak T.','1 เดือนที่แล้ว')]},
+ {id:'sc-02',name:'กรรไกรเด็กถนัดซ้าย ปลายมน 5 นิ้ว',en:'kids left handed scissors',price:190,cat:'scissors',rating:4.6,reviews:88,hand:'left',stock:60,tags:['คัดสรรพิเศษ'],
+  short:'สำหรับเด็กอนุบาล–ประถม ปลายมนปลอดภัย ด้ามคู่สีระบุมือซ้าย',
+  left:'ห่วงนิ้วออกแบบให้นิ้วโป้งซ้ายอยู่ในห่วงล่าง เด็กจึงจับได้ถูกท่าตั้งแต่ครั้งแรก ไม่ต้องบิดข้อมือชดเชย',
+  vsRight:'กรรไกรเด็กทั่วไปบังคับให้เด็กถนัดซ้ายบิดข้อมือ ซึ่งเป็นสาเหตุที่ทำให้เด็กหลายคนคิดว่าตัวเอง “ตัดกระดาษไม่เก่ง”',
+  specs:{'ขนาด':'5 นิ้ว (13 ซม.)','ปลายใบมีด':'มน','เหมาะกับอายุ':'4 ปีขึ้นไป','วัสดุ':'สเตนเลส + ABS'},
+  rv:[R(5,'ครูประจำชั้นขอที่ซื้อไปเพิ่มให้ห้องเรียนด้วย','ครูอ้อย','5 วันที่แล้ว'),R(4,'คมพอดี ไม่คมเกินไปสำหรับเด็ก','ธีรเดช','3 สัปดาห์ที่แล้ว')]},
+ {id:'sc-03',name:'กรรไกรตัดผ้าถนัดซ้าย 9 นิ้ว',en:'left handed fabric shears',price:1290,cat:'scissors',rating:4.7,reviews:41,hand:'left',stock:8,tags:[],
+  short:'กรรไกรช่างตัดเย็บ ใบมีดยาว ตัดผ้าหนาได้ลื่นตลอดเส้น',
+  left:'ใบมีดล่างแนบโต๊ะและเส้นตัดอยู่ด้านขวาของใบมีดเมื่อจับด้วยมือซ้าย ทำให้เดินกรรไกรตามเส้นชอล์กได้ตรงโดยไม่ต้องยกผ้า',
+  vsRight:'ช่างถนัดซ้ายที่ใช้กรรไกรทั่วไปมักตัดเบี้ยวออกนอกเส้นประมาณ 1–2 มม. ต่อเมตร',
+  specs:{'ขนาด':'9 นิ้ว (23 ซม.)','วัสดุ':'เหล็กกล้าคาร์บอนสูง','เหมาะกับ':'ผ้าฝ้าย ยีนส์ ผ้าซับใน','น้ำหนัก':'240 กรัม'},
+  rv:[R(5,'ใช้ในร้านตัดเสื้อทุกวัน หนึ่งเดือนแล้วยังคมดี','ป้าแดง เสื้อผ้า','1 เดือนที่แล้ว')]},
+ {id:'wr-01',name:'ปากกาหมึกแห้งไว Pilot Juice หมึกดำ 0.5 (แพ็ก 3)',en:'quick dry gel pen',price:165,cat:'writing',rating:4.9,reviews:213,hand:'ambi',stock:120,tags:['ขายดี'],
+  short:'หมึกเจลแห้งเร็วภายใน 1 วินาที ลดรอยเปื้อนจากสันมือ',
+  left:'คนถนัดซ้ายลากมือทับตัวอักษรที่เพิ่งเขียน หมึกสูตรแห้งเร็วจึงช่วยไม่ให้สันมือป้ายหมึกเลอะทั้งกระดาษและเสื้อ',
+  vsRight:'ปากกาเจลทั่วไปใช้เวลาแห้ง 3–5 วินาที ซึ่งนานพอให้มือซ้ายเลื่อนไปทับตัวอักษรได้',
+  specs:{'หัวปากกา':'0.5 มม.','สีหมึก':'ดำ','เวลาแห้ง':'ประมาณ 1 วินาที','จำนวน':'3 ด้าม'},
+  rv:[R(5,'สมุดจดไม่เลอะอีกเลย เปลี่ยนชีวิตการเรียนมาก','นิสิตปี 2','1 สัปดาห์ที่แล้ว'),R(5,'ซื้อซ้ำรอบที่สามแล้ว','อรอุมา','2 สัปดาห์ที่แล้ว'),R(4,'อยากให้มีสีน้ำเงินด้วย','K. Pong','1 เดือนที่แล้ว')]},
+ {id:'wr-02',name:'ปากกาหมึกซึม Lamy Safari หัวถนัดซ้าย (LH)',en:'lamy safari left handed nib fountain pen',price:1450,cat:'writing',rating:4.7,reviews:57,hand:'left',stock:15,tags:['คัดสรรพิเศษ'],
+  short:'หัวปากกาเจียรพิเศษสำหรับทิศทางการลากเส้นแบบผลัก',
+  left:'หัวปากกา LH เจียรให้หมึกไหลสม่ำเสมอเมื่อ “ผลัก” ปากกาไปข้างหน้า ซึ่งเป็นทิศทางที่มือซ้ายเขียนจริง ไม่สะดุดและไม่ขูดกระดาษ',
+  vsRight:'หัวปากกามาตรฐานออกแบบให้ “ลาก” เข้าหาตัว คนถนัดซ้ายจึงมักรู้สึกว่าหมึกขาดเป็นช่วง ๆ',
+  specs:{'หัวปากกา':'LH (Left-handed)','ระบบหมึก':'หลอดหมึก / สูบหมึก','ด้าม':'ABS','ในกล่อง':'ปากกา + หลอดหมึก 1 หลอด'},
+  rv:[R(5,'เขียนลื่นจนแปลกใจ ไม่เคยรู้ว่ามีหัวปากกาแบบนี้','ภาคิน','2 สัปดาห์ที่แล้ว'),R(4,'ราคาสูงแต่คุ้มถ้าเขียนเยอะ','Mint','1 เดือนที่แล้ว')]},
+ {id:'wr-03',name:'ปลอกจับดินสอฝึกท่าจับ ถนัดซ้าย (แพ็ก 4)',en:'left handed pencil grip',price:129,cat:'writing',rating:4.5,reviews:94,hand:'left',stock:200,tags:[],
+  short:'ยางจับนุ่มที่มีร่องนิ้วกลับด้านสำหรับมือซ้าย',
+  left:'ร่องนิ้วโป้งอยู่ฝั่งขวาของปลอก ทำให้เด็กถนัดซ้ายวางนิ้วได้ถูกตำแหน่งโดยไม่ต้องงอข้อมือเป็นรูปตะขอ',
+  vsRight:'ปลอกจับทั่วไปจะดันให้มือซ้ายหมุนเข้าด้านใน ซึ่งทำให้ปวดข้อมือเมื่อเขียนนาน',
+  specs:{'วัสดุ':'ซิลิโคนเกรดอาหาร','จำนวน':'4 ชิ้น','ใช้กับ':'ดินสอ/ปากกาแกนกลม','อายุที่แนะนำ':'4–10 ปี'},
+  rv:[R(5,'ลูกเลิกจับดินสอแบบตะขอภายในสองสัปดาห์','แม่น้องปุ๊ย','3 สัปดาห์ที่แล้ว'),R(4,'นุ่มดี แต่ควรล้างบ่อย ๆ','Nok','1 เดือนที่แล้ว')]},
+ {id:'ru-01',name:'ไม้บรรทัดสเกลกลับด้าน 30 ซม.',en:'left handed ruler reverse scale',price:95,cat:'ruler',rating:4.6,reviews:73,hand:'left',stock:150,tags:['มาใหม่'],
+  short:'ตัวเลขเรียงจากขวาไปซ้าย อ่านค่าได้ทันทีโดยไม่ต้องคำนวณ',
+  left:'เมื่อมือซ้ายจับดินสอ มือขวาจะกดไม้บรรทัดและเริ่มวัดจากฝั่งขวา สเกลกลับด้านจึงให้เลข 0 อยู่ตรงจุดที่เริ่มลากพอดี',
+  vsRight:'ไม้บรรทัดทั่วไปทำให้มือซ้ายบังตัวเลขที่กำลังวัด ต้องยกมือดูซ้ำหรือคำนวณกลับ',
+  specs:{'ความยาว':'30 ซม.','วัสดุ':'อะคริลิกใส','สเกล':'ขวา→ซ้าย (มีสเกลปกติกำกับตัวเล็ก)','ขอบ':'กันลื่น'},
+  rv:[R(5,'เรื่องเล็กแต่ช่วยได้จริงตอนเขียนแบบ','สถาปนิกฝึกหัด','1 สัปดาห์ที่แล้ว'),R(5,'ซื้อเผื่อไว้ให้เพื่อนด้วย','Ploy','1 เดือนที่แล้ว')]},
+ {id:'ru-02',name:'สมุดโน้ตสันห่วงบนหัว A5 เส้นบรรทัด',en:'top spiral notebook',price:145,cat:'ruler',rating:4.8,reviews:102,hand:'ambi',stock:90,tags:['ขายดี'],
+  short:'ห่วงอยู่ด้านบน สันจึงไม่ขวางสันมือซ้ายขณะเขียน',
+  left:'สมุดสันข้างทำให้มือซ้ายต้องพาดบนขดลวดตลอดเวลา สมุดเล่มนี้ย้ายห่วงไปด้านบน มือจึงวางราบบนหน้ากระดาษได้เต็มฝ่ามือ',
+  vsRight:'คนถนัดขวาแทบไม่รู้สึกถึงปัญหานี้ เพราะสันห่วงอยู่ฝั่งตรงข้ามกับมือที่เขียน',
+  specs:{'ขนาด':'A5 (148×210 มม.)','จำนวนหน้า':'80 แผ่น','กระดาษ':'70 แกรม','เส้น':'บรรทัด 7 มม.'},
+  rv:[R(5,'ไม่มีรอยขดลวดกดแขนอีกแล้ว','ธัญชนก','4 วันที่แล้ว'),R(5,'เหมาะกับจดเลกเชอร์มาก','พีรพัฒน์','2 สัปดาห์ที่แล้ว')]},
+ {id:'cp-01',name:'เมาส์ไร้สายถนัดซ้าย ทรงเออร์โกโนมิก 2.4GHz',en:'left handed ergonomic wireless mouse',price:890,old:1090,cat:'computer',rating:4.7,reviews:158,hand:'left',stock:32,tags:['ขายดี'],
+  short:'ทรงโค้งรับมือซ้ายจริง พร้อมปุ่มข้างอยู่ฝั่งขวาของเมาส์',
+  left:'ส่วนโค้งรองรับอุ้งมือซ้ายและมีที่พักนิ้วก้อยฝั่งซ้าย ปุ่ม Back/Forward ย้ายไปอยู่ฝั่งที่นิ้วโป้งซ้ายเอื้อมถึง',
+  vsRight:'เมาส์ “ทรงสมมาตร” ที่ร้านทั่วไปแนะนำให้คนถนัดซ้ายใช้ ยังคงวางปุ่มข้างไว้ฝั่งเดียว ซึ่งกดไม่ถึงด้วยนิ้วโป้งซ้าย',
+  specs:{'การเชื่อมต่อ':'USB 2.4GHz (มีตัวรับสัญญาณ)','DPI':'800/1200/1600','แบตเตอรี่':'AA 1 ก้อน','ปุ่ม':'6 ปุ่ม','ระบบที่รองรับ':'Windows / macOS / Linux'},
+  rv:[R(5,'ใช้ทำงานทั้งวันไม่ปวดข้อมือเหมือนเมาส์ตัวเก่า','กราฟิกดีไซเนอร์','1 สัปดาห์ที่แล้ว'),R(4,'อยากให้มีรุ่นบลูทูธด้วย','Tar','3 สัปดาห์ที่แล้ว'),R(5,'ปุ่มข้างอยู่ตำแหน่งที่ควรเป็นสักที','วิชญ์','1 เดือนที่แล้ว')]},
+ {id:'cp-02',name:'คีย์บอร์ดตัวเลขแยก (Numpad) USB',en:'external numpad',price:450,cat:'computer',rating:4.4,reviews:64,hand:'ambi',stock:45,tags:[],
+  short:'แยกแป้นตัวเลขมาวางฝั่งซ้ายของคีย์บอร์ดได้อิสระ',
+  left:'คนถนัดซ้ายที่กรอกตัวเลขบ่อยจะต้องเอื้อมข้ามคีย์บอร์ดไปฝั่งขวาตลอด การแยก Numpad มาวางฝั่งซ้ายทำให้มือหลักอยู่กับที่',
+  vsRight:'คีย์บอร์ดเต็มขนาดวาง Numpad ไว้ขวาเสมอ ซึ่งออกแบบมาเพื่อมือขวาโดยตรง',
+  specs:{'การเชื่อมต่อ':'USB-A','จำนวนปุ่ม':'22 ปุ่ม','สวิตช์':'เมมเบรน','ความยาวสาย':'1.4 ม.'},
+  rv:[R(5,'ทำบัญชีเร็วขึ้นจริง','พี่บัญชี','2 สัปดาห์ที่แล้ว'),R(4,'ปุ่มเสียงดังไปนิด','Nan','1 เดือนที่แล้ว')]},
+ {id:'cp-03',name:'แผ่นรองเมาส์ทรงถนัดซ้าย พร้อมที่รองข้อมือ',en:'left handed mouse pad wrist rest',price:320,cat:'computer',rating:4.5,reviews:49,hand:'left',stock:70,tags:['มาใหม่'],
+  short:'ที่รองข้อมือเอียงองศาสำหรับการวางมือซ้าย',
+  left:'ทรงของเจลรองข้อมือสะท้อนกลับด้านจากรุ่นมาตรฐาน จุดรับน้ำหนักจึงอยู่ใต้ฐานฝ่ามือซ้ายพอดี',
+  vsRight:'แผ่นรองทั่วไปทำให้ข้อมือซ้ายบิดออกด้านนอกเล็กน้อยตลอดวัน',
+  specs:{'ขนาด':'250×210 มม.','วัสดุ':'เจลนุ่ม + ผ้าไมโครไฟเบอร์','ฐาน':'ยางกันลื่น'},
+  rv:[R(5,'ข้อมือสบายขึ้นชัดเจน','ออฟฟิศเมท','1 สัปดาห์ที่แล้ว')]},
+ {id:'kt-01',name:'มีดปอกผลไม้ใบมีดลับด้านเดียว (ซ้าย) 3 นิ้ว',en:'left handed paring knife',price:390,cat:'kitchen',rating:4.6,reviews:52,hand:'left',stock:38,tags:[],
+  short:'มุมลับคมอยู่ฝั่งซ้าย ปอกแล้วมีดไม่เบนเข้าเนื้อผลไม้',
+  left:'ใบมีดลับคมข้างเดียวฝั่งซ้าย ทำให้มือซ้ายกดมีดแล้วคมวิ่งตรง ไม่เฉไปตัดลึกกว่าที่ต้องการ',
+  vsRight:'มีดลับคมข้างเดียวแบบมาตรฐานจะบังคับให้คนถนัดซ้ายเอียงข้อมือชดเชยเพื่อให้มีดเดินตรง',
+  specs:{'ความยาวใบมีด':'3 นิ้ว (7.5 ซม.)','วัสดุ':'สเตนเลสญี่ปุ่น','ด้าม':'ไม้อัดเรซิน','การลับคม':'ข้างเดียว ฝั่งซ้าย'},
+  rv:[R(5,'ปอกแอปเปิลได้บางสม่ำเสมอครั้งแรกในชีวิต','เชฟมือใหม่','2 สัปดาห์ที่แล้ว'),R(4,'ต้องระวังตอนล้าง คมมาก','สมชาย','1 เดือนที่แล้ว')]},
+ {id:'kt-02',name:'ที่เปิดกระป๋องถนัดซ้าย หมุนทวนเข็ม',en:'left handed can opener',price:280,cat:'kitchen',rating:4.3,reviews:37,hand:'left',stock:55,tags:[],
+  short:'ก้านหมุนอยู่ฝั่งตรงข้าม หมุนด้วยมือซ้ายได้เต็มแรง',
+  left:'เฟืองและก้านหมุนสลับด้าน ทำให้มือซ้ายหมุนออกนอกตัวได้ตามธรรมชาติ ไม่ต้องยกกระป๋องขึ้นหมุนกลางอากาศ',
+  vsRight:'ที่เปิดกระป๋องทั่วไปบังคับให้ใช้มือขวาหมุน มือซ้ายได้แค่ประคอง',
+  specs:{'วัสดุ':'สเตนเลส + ด้ามยาง','ระบบ':'เฟืองหมุนทวนเข็มนาฬิกา','ล้าง':'ล้างมือแนะนำ'},
+  rv:[R(4,'ใช้ง่ายกว่าเดิมเยอะ ต้องปรับตัวนิดหน่อยตอนแรก','ยายนิด','3 สัปดาห์ที่แล้ว')]},
+ {id:'kt-03',name:'ทัพพีตักซุปมีปากรินสองด้าน',en:'ambidextrous ladle',price:210,cat:'kitchen',rating:4.4,reviews:45,hand:'ambi',stock:80,tags:['คัดสรรพิเศษ'],
+  short:'มีปากรินทั้งซ้ายและขวา รินได้โดยไม่ต้องพลิกข้อมือ',
+  left:'ทัพพีทั่วไปมักมีปากรินข้างเดียวฝั่งขวา รุ่นนี้เพิ่มปากรินฝั่งซ้าย มือซ้ายจึงเทซุปลงชามได้โดยไม่หก',
+  vsRight:'ใช้ได้ดีทั้งสองมือ เหมาะกับครัวที่มีคนใช้หลายคน',
+  specs:{'วัสดุ':'สเตนเลส 304','ความยาว':'28 ซม.','ความจุ':'90 มล.','เข้าเครื่องล้างจาน':'ได้'},
+  rv:[R(5,'ซื้อให้ครัวที่บ้าน ทุกคนใช้ได้หมด','ครัวคุณแม่','1 สัปดาห์ที่แล้ว')]},
+ {id:'sp-01',name:'ถุงมือกอล์ฟสำหรับผู้เล่นถนัดซ้าย (สวมมือขวา)',en:'left handed golfer glove',price:590,cat:'sports',rating:4.5,reviews:33,hand:'left',stock:26,tags:[],
+  short:'ถุงมือสำหรับนักกอล์ฟถนัดซ้าย ซึ่งต้องสวมที่มือขวา',
+  left:'ผู้เล่นถนัดซ้ายจับไม้โดยมือขวาอยู่บน จึงต้องใช้ถุงมือข้างขวา ซึ่งเป็นสินค้าที่ร้านทั่วไปมักไม่มีสต็อก',
+  vsRight:'ถุงมือที่วางขายส่วนใหญ่เป็นข้างซ้ายสำหรับผู้เล่นถนัดขวาเท่านั้น',
+  specs:{'ข้างที่สวม':'มือขวา','วัสดุ':'หนังแกะสังเคราะห์','ขนาด':'S / M / L','สี':'ขาว'},
+  rv:[R(5,'หาซื้อในไทยยากมาก ดีใจที่มีขาย','นักกอล์ฟสมัครเล่น','2 สัปดาห์ที่แล้ว')]},
+ {id:'sp-02',name:'ไม้แบดมินตันด้ามจับแต่งสำหรับมือซ้าย',en:'badminton racket left grip',price:1250,cat:'sports',rating:4.2,reviews:21,hand:'left',stock:12,tags:['มาใหม่'],
+  short:'พันกริปแบบกลับทิศให้ยึดเกาะตามการหมุนข้อมือซ้าย',
+  left:'ทิศการพันกริปสวนกับการบิดข้อมือ ทำให้กริปไม่คลายขณะตีลูกด้วยมือซ้าย',
+  vsRight:'ไม้ที่พันกริปมาจากโรงงานพันตามมือขวา ผู้เล่นซ้ายจึงมักรู้สึกกริปคลายเร็ว',
+  specs:{'น้ำหนัก':'4U (80–84 ก.)','ความตึงเอ็นแนะนำ':'22–26 ปอนด์','วัสดุ':'คาร์บอนไฟเบอร์','แถม':'ปลอกไม้'},
+  rv:[R(4,'กริปไม่คลายจริง เล่นสองชั่วโมงยังแน่น','ชมรมแบด','3 สัปดาห์ที่แล้ว')]},
+ {id:'tl-01',name:'ตลับเมตร 5 ม. สเกลอ่านสองทิศทาง',en:'dual scale tape measure',price:340,cat:'tools',rating:4.6,reviews:58,hand:'ambi',stock:64,tags:[],
+  short:'พิมพ์ตัวเลขทั้งสองด้านของเทป อ่านได้ทั้งมือซ้ายและขวา',
+  left:'เมื่อดึงเทปด้วยมือซ้าย ตัวเลขของตลับเมตรทั่วไปจะกลับหัว รุ่นนี้พิมพ์สเกลกลับด้านไว้อีกฝั่ง จึงอ่านค่าได้ทันที',
+  vsRight:'ช่างถนัดซ้ายมักต้องอ่านเลขกลับหัวหรือย้ายไปอีกฝั่งของชิ้นงาน ซึ่งเป็นจุดที่ทำให้วัดพลาดบ่อย',
+  specs:{'ความยาว':'5 เมตร','ความกว้างเทป':'19 มม.','ระบบล็อก':'ล็อกอัตโนมัติ','เข็มขัด':'มีคลิปหนีบ'},
+  rv:[R(5,'ไม่ต้องเอียงคออ่านเลขอีกแล้ว','ช่างไม้','1 สัปดาห์ที่แล้ว'),R(4,'เทปแข็งดี ยื่นได้ไกล','Tee','1 เดือนที่แล้ว')]},
+ {id:'tl-02',name:'คัตเตอร์ปรับใบมีดสลับด้านได้',en:'reversible utility knife',price:260,cat:'tools',rating:4.4,reviews:40,hand:'ambi',stock:75,tags:[],
+  short:'สลับตำแหน่งใบมีดและสไลด์ล็อกไปฝั่งซ้ายได้ในสองวินาที',
+  left:'ปุ่มเลื่อนใบมีดถอดสลับฝั่งได้ นิ้วโป้งซ้ายจึงควบคุมความยาวใบมีดได้เองโดยไม่ต้องเปลี่ยนมือ',
+  vsRight:'คัตเตอร์ทั่วไปวางสไลด์ไว้ฝั่งเดียว คนถนัดซ้ายต้องใช้นิ้วชี้งัด ซึ่งควบคุมแรงได้น้อยกว่า',
+  specs:{'ใบมีด':'18 มม. หักปล้องได้','ตัวเรือน':'สังกะสีอัลลอย','ล็อก':'สกรูล็อก','แถมใบมีด':'3 ใบ'},
+  rv:[R(4,'สลับด้านง่ายกว่าที่คิด','DIY คุณโอ๊ต','2 สัปดาห์ที่แล้ว')]},
+ {id:'lf-01',name:'แก้วมัคลายพิมพ์ด้านซ้าย 350 มล.',en:'left handed mug',price:290,cat:'lifestyle',rating:4.7,reviews:96,hand:'left',stock:110,tags:['ขายดี'],
+  short:'ลายกราฟิกอยู่ฝั่งที่หันออกเมื่อจับด้วยมือซ้าย',
+  left:'แก้วทั่วไปพิมพ์ลายไว้ฝั่งเดียว เมื่อจับด้วยมือซ้ายลายจะหันเข้าหาตัวเอง แก้วใบนี้ย้ายลายไปอีกฝั่งให้คนอื่นมองเห็น',
+  vsRight:'เป็นตัวอย่างชัดเจนว่าของใช้ประจำวันถูกออกแบบโดยตั้งต้นจากมือขวาเสมอ',
+  specs:{'ความจุ':'350 มล.','วัสดุ':'เซรามิก','เข้าไมโครเวฟ':'ได้','เข้าเครื่องล้างจาน':'ได้'},
+  rv:[R(5,'ซื้อเป็นของขวัญวันถนัดซ้ายสากล เพื่อนชอบมาก','Bow','1 สัปดาห์ที่แล้ว'),R(5,'น่ารักและใช้จริง','ปลายฝน','3 สัปดาห์ที่แล้ว')]},
+ {id:'lf-02',name:'กระเป๋าสะพายข้างเปิดฝาฝั่งซ้าย',en:'left side flap crossbody bag',price:1190,cat:'lifestyle',rating:4.4,reviews:28,hand:'left',stock:18,tags:['มาใหม่'],
+  short:'ตำแหน่งซิปและช่องหยิบอยู่ฝั่งที่มือซ้ายเอื้อมถึงก่อน',
+  left:'ช่องหยิบด่วนและหัวซิปอยู่ฝั่งซ้ายของตัวกระเป๋า หยิบโทรศัพท์หรือบัตรได้ด้วยมือซ้ายมือเดียว',
+  vsRight:'กระเป๋าส่วนใหญ่วางช่องหยิบด่วนไว้ฝั่งขวาตามมือหลักของคนส่วนใหญ่',
+  specs:{'ขนาด':'26×18×8 ซม.','วัสดุ':'ผ้าแคนวาสเคลือบกันน้ำ','สายสะพาย':'ปรับความยาวได้','ช่อง':'ช่องหลัก 1 + ช่องด่วน 2'},
+  rv:[R(4,'ใส่โน้ตบุ๊ก 13 นิ้วไม่ได้ แต่ใส่ของประจำวันพอดี','มินท์','2 สัปดาห์ที่แล้ว')]},
+ {id:'lf-03',name:'ชุดของขวัญคนถนัดซ้าย (กรรไกร + ปากกา + สมุด)',en:'left handed gift set',price:990,old:1180,cat:'lifestyle',rating:4.9,reviews:67,hand:'left',stock:30,tags:['คัดสรรพิเศษ'],
+  short:'เซ็ตเริ่มต้นที่คัดมาสามชิ้นที่คนถนัดซ้ายได้ใช้แน่นอน',
+  left:'รวมสามอย่างที่แก้ปัญหาเจอบ่อยที่สุด คือ ตัดแล้วไม่เห็นเส้น หมึกเลอะสันมือ และสันห่วงกดแขน',
+  vsRight:'เหมาะเป็นของขวัญให้คนถนัดซ้ายที่มักได้รับของที่ใช้ไม่ถนัด',
+  specs:{'ในเซ็ต':'กรรไกร 8 นิ้ว, ปากกาแห้งไว 1 ด้าม, สมุดห่วงบน A5','บรรจุภัณฑ์':'กล่องของขวัญ + การ์ด','มูลค่ารวมปกติ':'1,180 บาท'},
+  rv:[R(5,'ให้เป็นของขวัญวันเกิดแฟน เขาบอกว่าไม่เคยได้ของที่คิดถึงเขาแบบนี้','เจมส์','5 วันที่แล้ว'),R(5,'คุ้มกว่าซื้อแยก','Aum','2 สัปดาห์ที่แล้ว')]}
+];
+
+const ARTICLES=[
+ {id:'a1',kicker:'พื้นฐาน',icon:'writing',title:'ทำไมมือซ้ายถึงเลอะหมึกตลอด (และแก้ได้ยังไง)',excerpt:'เพราะเราเขียนจากซ้ายไปขวา มือจึงลากทับตัวอักษรที่เพิ่งเขียน มาดูสามวิธีที่ได้ผลจริง',
+  body:`<p>ปัญหาหมึกเลอะไม่ได้เกิดจากการเขียนไม่ระวัง แต่เกิดจากทิศทางของภาษาเอง ภาษาไทยและอังกฤษเขียนจากซ้ายไปขวา มือที่เขียนจึงเคลื่อนตามไปทับตัวอักษรที่หมึกยังไม่แห้ง</p>
+  <h3>สามวิธีที่ได้ผลจริง</h3>
+  <ul><li><b>เปลี่ยนหมึก</b> — เลือกปากกาเจลที่ระบุว่าแห้งเร็วภายใน 1 วินาที จะลดรอยเปื้อนได้มากที่สุดโดยไม่ต้องเปลี่ยนท่าเขียน</li>
+  <li><b>หมุนกระดาษ</b> — เอียงสมุดตามเข็มนาฬิกาประมาณ 30–45 องศา ข้อมือจะอยู่ใต้บรรทัดแทนที่จะอยู่บนบรรทัด</li>
+  <li><b>ย้ายสันห่วง</b> — ใช้สมุดห่วงบนหัวแทนสมุดสันข้าง เพื่อให้ฝ่ามือวางราบได้เต็ม</li></ul>
+  <p>ถ้าต้องเลือกทำอย่างเดียว ให้เริ่มจากการเปลี่ยนหมึก เพราะเห็นผลทันทีตั้งแต่บรรทัดแรก</p>`},
+ {id:'a2',kicker:'สำหรับผู้ปกครอง',icon:'hand',title:'ลูกถนัดซ้าย ควรฝึกให้ใช้มือขวาไหม',excerpt:'คำตอบสั้น ๆ คือไม่ควร และนี่คือสิ่งที่ช่วยได้มากกว่าการบังคับเปลี่ยนมือ',
+  body:`<p>การบังคับให้เด็กถนัดซ้ายเปลี่ยนมาใช้มือขวาเคยเป็นเรื่องปกติในอดีต ปัจจุบันแนวทางด้านการศึกษาส่วนใหญ่ไม่แนะนำ เพราะสร้างความสับสนและความกดดันโดยไม่จำเป็น</p>
+  <h3>สิ่งที่ช่วยได้มากกว่า</h3>
+  <ul><li>จัดที่นั่งให้เด็กถนัดซ้ายนั่งฝั่งซ้ายของโต๊ะคู่ ศอกจะได้ไม่ชนกับเพื่อน</li>
+  <li>เตรียมกรรไกรถนัดซ้ายไว้ในห้องเรียนอย่างน้อย 2–3 อัน</li>
+  <li>สอนท่าเอียงกระดาษตั้งแต่เริ่มหัดเขียน แทนการแก้ทีหลัง</li></ul>
+  <p>เมื่ออุปกรณ์ถูกต้อง เด็กจำนวนมากที่ถูกมองว่า "ทำงานฝีมือไม่เก่ง" ทำได้ดีขึ้นทันที</p>`},
+ {id:'a3',kicker:'คู่มือเลือกซื้อ',icon:'scissors',title:'กรรไกรถนัดซ้ายของจริง ต่างจากของปลอมยังไง',excerpt:'ด้ามจับสมมาตรไม่ได้แปลว่าถนัดซ้าย จุดที่ต้องดูจริง ๆ คือทิศของใบมีด',
+  body:`<p>สินค้าหลายชิ้นในตลาดเขียนว่า "ใช้ได้ทั้งสองมือ" แต่เปลี่ยนแค่รูปทรงด้ามจับ ในขณะที่ใบมีดยังเรียงแบบเดิม</p>
+  <h3>วิธีตรวจสอบใน 5 วินาที</h3>
+  <ul><li>ถือกรรไกรตั้งขึ้นแล้วมองจากด้านหน้า ถ้าใบมีดที่อยู่ "บน" อยู่ฝั่งซ้าย แปลว่าเป็นกรรไกรถนัดซ้ายจริง</li>
+  <li>ลองตัดกระดาษหนึ่งครั้ง ถ้ามองเห็นเส้นตัดโดยไม่ต้องเอียงข้อมือ แปลว่าใช่</li>
+  <li>ถ้ากระดาษยับหรือพับหนีใบมีด แปลว่ายังเป็นกรรไกรถนัดขวาที่เปลี่ยนแค่ด้าม</li></ul>
+  <p>ที่ LeftEase เราทดสอบข้อนี้กับสินค้าทุกชิ้นก่อนรับเข้าร้าน และระบุไว้ในหน้าสินค้าว่าเป็นแบบถนัดซ้ายแท้หรือใช้ได้สองมือ</p>`},
+ {id:'a4',kicker:'ที่ทำงาน',icon:'computer',title:'จัดโต๊ะทำงานสำหรับคนถนัดซ้ายใน 20 นาที',excerpt:'ย้ายของห้าอย่าง แล้วอาการปวดไหล่ตอนเย็นจะลดลงอย่างรู้สึกได้',
+  body:`<p>โต๊ะทำงานมาตรฐานถูกจัดวางตามมือขวาโดยอัตโนมัติ ตั้งแต่ตำแหน่งเมาส์ไปจนถึงทิศของโคมไฟ</p>
+  <h3>ห้าอย่างที่ควรย้าย</h3>
+  <ul><li><b>เมาส์</b> ไปฝั่งซ้าย และสลับปุ่มซ้าย/ขวาในตั้งค่าระบบ</li>
+  <li><b>โคมไฟ</b> ไปฝั่งขวา เพื่อไม่ให้มือซ้ายทอดเงาทับงานที่เขียน</li>
+  <li><b>แก้วน้ำ</b> ไปฝั่งขวา ลดโอกาสทำหกขณะเอื้อมข้ามโต๊ะ</li>
+  <li><b>สมุดจด</b> เยื้องไปทางซ้ายของคีย์บอร์ดเล็กน้อย</li>
+  <li><b>Numpad แยก</b> วางฝั่งซ้ายถ้าต้องกรอกตัวเลขบ่อย</li></ul>
+  <p>ทั้งหมดนี้ไม่มีค่าใช้จ่ายยกเว้นข้อสุดท้าย แต่เป็นการเปลี่ยนที่ให้ผลมากที่สุดต่อการทำงานทั้งวัน</p>`},
+ {id:'a5',kicker:'ชุมชน',icon:'chat',title:'รวมคำถามจากสมาชิก: ของอะไรที่หาซื้อในไทยยากที่สุด',excerpt:'เราถามสมาชิก 200 คน คำตอบอันดับหนึ่งอาจไม่ใช่สิ่งที่คุณคิด',
+  body:`<p>เราเปิดโพลในกลุ่มสมาชิกและได้คำตอบกลับมา 200 กว่าข้อความ สามอันดับแรกคือ</p>
+  <h3>สิ่งที่สมาชิกหาซื้อยากที่สุด</h3>
+  <ul><li>ถุงมือกีฬาสำหรับผู้เล่นถนัดซ้าย โดยเฉพาะกอล์ฟและเบสบอล</li>
+  <li>เครื่องมือช่างที่มีสเกลอ่านได้จากฝั่งซ้าย</li>
+  <li>กรรไกรตัดผ้าและกรรไกรตัดผมระดับมืออาชีพ</li></ul>
+  <p>เรานำรายการนี้ไปใช้เลือกสินค้าเข้าร้านรอบถัดไป ถ้าคุณมีของที่หาไม่เจอ ส่งมาบอกเราได้ที่หน้าติดต่อเรา</p>`},
+ {id:'a6',kicker:'เรื่องเล่า',icon:'book',title:'13 สิงหาคม: วันถนัดซ้ายสากลมีที่มาจากอะไร',excerpt:'วันที่ถูกตั้งขึ้นเพื่อชวนให้คนสังเกตว่าของรอบตัวออกแบบมาเพื่อใคร',
+  body:`<p>วันถนัดซ้ายสากลตรงกับวันที่ 13 สิงหาคมของทุกปี จุดประสงค์ไม่ใช่การเฉลิมฉลองอย่างเดียว แต่เพื่อชวนให้สังเกตว่าอุปกรณ์รอบตัวถูกออกแบบโดยตั้งต้นจากผู้ใช้กลุ่มไหน</p>
+  <p>กิจกรรมที่นิยมทำกันคือการให้คนถนัดขวาลองใช้ของด้วยมือซ้ายตลอดหนึ่งวัน ซึ่งมักทำให้เข้าใจปัญหาได้เร็วกว่าการอธิบายเป็นคำพูด</p>
+  <p>ทุกปีในวันนี้ LeftEase จะรวบรวมสินค้าที่สมาชิกโหวตว่า "ควรมีขายในไทย" มาเปิดพรีออเดอร์</p>`}
+];
+
+const FAQS=[
+ ['สินค้าทุกชิ้นเป็นของถนัดซ้ายแท้หรือไม่','เราแบ่งสินค้าเป็นสองแบบและระบุไว้ชัดเจนในทุกหน้าสินค้า คือ "ถนัดซ้ายโดยเฉพาะ" ที่โครงสร้างกลับด้านจริง และ "ใช้ได้สองมือ" ที่ออกแบบให้ไม่เสียเปรียบเมื่อใช้มือซ้าย'],
+ ['ส่งสินค้ากี่วัน','กรุงเทพฯ และปริมณฑล 1–2 วันทำการ ต่างจังหวัด 2–4 วันทำการ สั่งก่อน 14:00 น. จัดส่งภายในวันเดียวกัน'],
+ ['ค่าจัดส่งเท่าไร','ค่าจัดส่งแบบมาตรฐาน 40 บาท และฟรีเมื่อสั่งครบ 800 บาทขึ้นไป'],
+ ['เปลี่ยนหรือคืนสินค้าได้ไหม','คืนได้ภายใน 14 วันหากสินค้าอยู่ในสภาพเดิม หากสินค้าไม่ตรงกับที่ระบุว่าเป็นแบบถนัดซ้าย เรารับผิดชอบค่าส่งคืนทั้งหมด'],
+ ['อยากให้ร้านนำสินค้าชิ้นที่ต้องการเข้ามาขาย ทำอย่างไร','ส่งชื่อสินค้าหรือลิงก์มาที่หน้าติดต่อเรา ทุกเดือนเราจะเลือกรายการที่มีคนขอมากที่สุดไปติดต่อซัพพลายเออร์'],
+ ['โรงเรียนหรือองค์กรสั่งจำนวนมากได้หรือไม่','ได้ สำหรับคำสั่งซื้อตั้งแต่ 20 ชิ้นขึ้นไปมีราคาพิเศษและออกใบเสนอราคาให้ ติดต่อผ่านหน้าติดต่อเรา'],
+ ['ชำระเงินด้วยวิธีใดได้บ้าง','บัตรเครดิต/เดบิต พร้อมเพย์ โอนผ่านธนาคาร และเก็บเงินปลายทาง (มีค่าบริการเพิ่ม 20 บาท)']
+];
+
+/* ============ ART (placeholder product images) ============ */
+const ART_COLORS={scissors:['#166E7E','#E8763C'],writing:['#1F7A6B','#E8763C'],ruler:['#2A6E8F','#E8A33C'],computer:['#175F7E','#5FBFC4'],kitchen:['#1B7A63','#E8763C'],sports:['#2B6E8A','#E8B23C'],tools:['#2F6A78','#E8763C'],lifestyle:['#1E6E7E','#E8763C']};
+function art(p,seed){
+  const c=ART_COLORS[p.cat]||['#166E7E','#E8763C'];
+  const icon=(CATS.find(x=>x.id===p.cat)||{icon:'box'}).icon;
+  const rot=[0,-8,7][seed%3]||0;
+  return `<svg viewBox="0 0 200 200" role="img" aria-label="ภาพสินค้า ${esc(p.name)}" xmlns="http://www.w3.org/2000/svg">
+    <rect width="200" height="200" fill="none"/>
+    <circle cx="${60+seed*12}" cy="${150-seed*8}" r="62" fill="${c[0]}" opacity=".10"/>
+    <circle cx="148" cy="56" r="34" fill="${c[1]}" opacity=".16"/>
+    <g transform="translate(100 100) rotate(${rot}) translate(-40 -40) scale(3.33)" fill="none" stroke="${c[0]}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${I[icon]||I.box}</g>
+    <g transform="translate(152 150)"><path d="M8 0L0 8l8 8" fill="none" stroke="${c[1]}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </svg>`;
+}
+
+/* ============ STATE ============ */
+const store={
+  get(k,f){try{const v=localStorage.getItem('leftease:'+k);return v?JSON.parse(v):f}catch(e){return f}},
+  set(k,v){try{localStorage.setItem('leftease:'+k,JSON.stringify(v))}catch(e){}}
+};
+let cart=store.get('cart',[]);
+let wish=store.get('wish',[]);
+let orders=store.get('orders',[]);
+
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const baht=n=>'฿'+n.toLocaleString('th-TH');
+const find=id=>P.find(p=>p.id===id);
+const stars=r=>{const f=Math.round(r);return `<span class="stars" aria-hidden="true">${'★'.repeat(f)}${'☆'.repeat(5-f)}</span>`};
+
+function saveCart(){store.set('cart',cart);syncBadges()}
+function saveWish(){store.set('wish',wish);syncBadges()}
+function cartQty(){return cart.reduce((s,i)=>s+i.qty,0)}
+function cartTotal(){return cart.reduce((s,i)=>{const p=find(i.id);return s+(p?p.price*i.qty:0)},0)}
+function shipping(){const t=cartTotal();return t===0||t>=800?0:40}
+
+function syncBadges(){
+  const c=document.getElementById('cartCount'), w=document.getElementById('wishCount');
+  const q=cartQty(); c.textContent=q; c.hidden=q===0;
+  w.textContent=wish.length; w.hidden=wish.length===0;
+}
+function toast(msg){
+  const t=document.createElement('div');
+  t.className='toast'; t.innerHTML=ic('check',18)+'<span>'+esc(msg)+'</span>';
+  document.getElementById('toast').appendChild(t);
+  setTimeout(()=>t.remove(),2600);
+}
+function addToCart(id,qty=1){
+  const line=cart.find(i=>i.id===id);
+  if(line) line.qty+=qty; else cart.push({id,qty});
+  saveCart(); toast('เพิ่ม “'+find(id).name.slice(0,26)+'…” ลงตะกร้าแล้ว');
+}
+function toggleWish(id){
+  const i=wish.indexOf(id);
+  if(i>-1){wish.splice(i,1);toast('นำออกจากรายการที่ถูกใจแล้ว')}
+  else{wish.push(id);toast('บันทึกลงรายการที่ถูกใจแล้ว')}
+  saveWish(); render();
+}
+
+/* ============ COMPONENTS ============ */
+function productCard(p,i=0){
+  const liked=wish.includes(p.id);
+  const tag=p.tags[0];
+  return `<article class="card">
+    <a class="thumb" href="#/product/${p.id}" aria-label="ดูรายละเอียด ${esc(p.name)}">
+      ${art(p,i)}
+      ${tag?`<span class="tag ${tag==='คัดสรรพิเศษ'?'calm':''}">${esc(tag)}</span>`:''}
+    </a>
+    <button class="wish" data-wish="${p.id}" aria-pressed="${liked}" aria-label="${liked?'นำ':'เพิ่ม'} ${esc(p.name)} ${liked?'ออกจาก':'เข้า'}รายการที่ถูกใจ">${ic('heart',17)}</button>
+    <div class="body">
+      <a class="name" href="#/product/${p.id}">${esc(p.name)}</a>
+      <span class="rate">${stars(p.rating)} ${p.rating} <span>(${p.reviews})</span></span>
+      <span class="badge-hand">${p.hand==='left'?'ถนัดซ้ายโดยเฉพาะ':'ใช้ได้สองมือ'}</span>
+      <span class="price">${baht(p.price)} ${p.old?`<span class="note" style="text-decoration:line-through;font-weight:400">${baht(p.old)}</span>`:''}</span>
+    </div>
+    <div class="foot"><button class="btn sm accent" data-add="${p.id}">ใส่ตะกร้า</button></div>
+  </article>`;
+}
+const crumb=items=>`<nav class="wrap crumb" aria-label="เส้นทางหน้า">${items.map((x,i)=>i<items.length-1?`<a href="${x[1]}">${esc(x[0])}</a> <span aria-hidden="true">›</span> `:`<span>${esc(x[0])}</span>`).join('')}</nav>`;
+
+/* ============ PAGES ============ */
+function pageHome(){
+  const best=P.filter(p=>p.tags.includes('ขายดี')).slice(0,4);
+  const fresh=P.filter(p=>p.tags.includes('มาใหม่')||p.tags.includes('คัดสรรพิเศษ')).slice(0,4);
+  return `
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">${ic('hand',16)} ร้านเฉพาะทางสำหรับคนถนัดซ้าย</span>
+        <h1>ของถนัดมือ<br>สำหรับคนถนัด<span class="flip">ซ้าย</span></h1>
+        <p class="hero-lead">ประมาณหนึ่งในสิบของคนทั้งโลกถนัดซ้าย แต่ของรอบตัวเกือบทั้งหมดออกแบบเผื่อมือขวา เรารวบรวมและทดลองใช้สินค้าที่ทำมาเพื่อมือซ้ายจริง ๆ ไว้ให้ในที่เดียว</p>
+        <div class="hero-cta">
+          <a class="btn accent" href="#/shop">เลือกซื้อสินค้า</a>
+          <a class="btn ghost" href="#/community">อ่านก่อนตัดสินใจ</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong>${P.length}</strong><span>สินค้าที่คัดแล้ว</span></div>
+          <div><strong>8</strong><span>หมวดหมู่</span></div>
+          <div><strong>1,240+</strong><span>รีวิวจากผู้ใช้จริง</span></div>
+        </div>
+      </div>
+      <div class="hero-art">
+        <p class="note" style="margin-bottom:12px">ลองจับกรรไกรสองแบบนี้ด้วยมือซ้าย</p>
+        <div class="mirror">
+          <div class="side bad">
+            ${ic('scissors',64)}
+            <h4>กรรไกรทั่วไป</h4>
+            <p>ใบมีดบังเส้นตัด กระดาษพับหนีใบมีด ต้องบิดข้อมือชดเชย</p>
+          </div>
+          <div class="rule" aria-hidden="true"></div>
+          <div class="side good">
+            ${ic('scissors',64)}
+            <h4>กรรไกรถนัดซ้าย</h4>
+            <p>ใบมีดสลับด้าน เห็นเส้นตัดชัด ตัดตรงโดยไม่ต้องฝืนข้อมือ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="sec-head"><h2>เลือกตามหมวดหมู่</h2><p>ทุกหมวดระบุไว้ชัดเจนว่าสินค้าชิ้นไหนกลับด้านจริง และชิ้นไหนใช้ได้ทั้งสองมือ</p></div>
+    <div class="cats">${CATS.map(c=>`<a class="cat" href="#/shop?cat=${c.id}">${ic(c.icon,34)}<b>${esc(c.name)}</b><span>${esc(c.note)}</span></a>`).join('')}</div>
+  </section>
+
+  <section class="block wrap" style="padding-top:0">
+    <div class="sec-head sec-head-row"><div><h2>คนถนัดซ้ายซื้ออะไรมากที่สุด</h2><p>สี่ชิ้นที่ลูกค้าสั่งซ้ำบ่อยที่สุดในเดือนนี้</p></div><a class="btn ghost sm" href="#/shop">ดูสินค้าทั้งหมด</a></div>
+    <div class="grid-products">${best.map((p,i)=>productCard(p,i)).join('')}</div>
+  </section>
+
+  <section class="block" style="background:var(--surface)">
+    <div class="wrap">
+      <div class="sec-head"><h2>ทำไมต้องซื้อที่ LeftEase</h2></div>
+      <div class="why">
+        <div><h3>คัดสรรก่อนขาย</h3><p>เรารับเข้าร้านเฉพาะสินค้าที่โครงสร้างออกแบบเพื่อมือซ้ายจริง ไม่ใช่แค่เปลี่ยนสีหรือรูปด้ามจับ</p></div>
+        <div><h3>ทดลองใช้จริง</h3><p>ทีมงานที่ถนัดซ้ายทดสอบสินค้าทุกชิ้นก่อนวางขาย และเขียนข้อสังเกตไว้ในหน้าสินค้า</p></div>
+        <div><h3>อธิบายให้เข้าใจ</h3><p>ทุกหน้าสินค้ามีส่วน “เหมาะกับคนถนัดซ้ายอย่างไร” ที่บอกกลไกและความต่างจากของทั่วไป</p></div>
+        <div><h3>ชุมชนที่เข้าใจกัน</h3><p>รีวิวและบทความมาจากคนถนัดซ้ายที่เจอปัญหาเดียวกัน ไม่ใช่คำโฆษณาจากผู้ผลิต</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="sec-head sec-head-row"><div><h2>มาใหม่และคัดสรรพิเศษ</h2><p>ของที่เพิ่งผ่านการทดสอบเข้าร้านรอบล่าสุด</p></div><a class="btn ghost sm" href="#/shop?sort=new">ดูทั้งหมด</a></div>
+    <div class="grid-products">${fresh.map((p,i)=>productCard(p,i+1)).join('')}</div>
+  </section>
+
+  <section class="block wrap" style="padding-top:0">
+    <div class="sec-head"><h2>เสียงจากลูกค้า</h2></div>
+    <div class="quotes">
+      <div class="quote"><p>“ใช้กรรไกรทั่วไปมา 30 ปี เพิ่งรู้ว่าที่ตัดไม่ตรงไม่ใช่ความผิดเรา”</p><footer>ณัฐพล ว. — ซื้อกรรไกร Fiskars</footer></div>
+      <div class="quote"><p>“ซื้อชุดของขวัญให้ลูกสาว เขาเอาไปอวดที่โรงเรียนอยู่หลายวัน”</p><footer>พิมพ์ชนก — ซื้อชุดของขวัญคนถนัดซ้าย</footer></div>
+      <div class="quote"><p>“หน้าสินค้าอธิบายละเอียดจนไม่ต้องไปหาข้อมูลที่อื่นเลย”</p><footer>วิชญ์ — ซื้อเมาส์ถนัดซ้าย</footer></div>
+    </div>
+  </section>`;
+}
+
+let shopState={q:'',cats:[],hand:'all',max:1500,sort:'pop',minRating:0};
+function pageShop(params){
+  if(params.get('cat')) shopState.cats=[params.get('cat')];
+  if(params.get('sort')) shopState.sort=params.get('sort');
+  if(params.get('q')!==null&&params.get('q')!==undefined) shopState.q=params.get('q');
+  return `${crumb([['หน้าแรก','#/'],['สินค้าทั้งหมด','#/shop']])}
+  <div class="wrap shop">
+    <aside class="filters" aria-label="ตัวกรองสินค้า">
+      <div class="fgroup">
+        <h4>หมวดหมู่</h4>
+        ${CATS.map(c=>`<label><input type="checkbox" data-f="cat" value="${c.id}" ${shopState.cats.includes(c.id)?'checked':''}> ${esc(c.name)}</label>`).join('')}
+      </div>
+      <div class="fgroup">
+        <h4>ระดับความถนัดซ้าย</h4>
+        <label><input type="radio" name="hand" data-f="hand" value="all" ${shopState.hand==='all'?'checked':''}> ทั้งหมด</label>
+        <label><input type="radio" name="hand" data-f="hand" value="left" ${shopState.hand==='left'?'checked':''}> ถนัดซ้ายโดยเฉพาะ</label>
+        <label><input type="radio" name="hand" data-f="hand" value="ambi" ${shopState.hand==='ambi'?'checked':''}> ใช้ได้สองมือ</label>
+      </div>
+      <div class="fgroup">
+        <h4>ราคาไม่เกิน <span id="priceOut">${baht(shopState.max)}</span></h4>
+        <input type="range" min="100" max="1500" step="50" value="${shopState.max}" data-f="max" aria-label="ราคาสูงสุด">
+      </div>
+      <div class="fgroup">
+        <h4>คะแนนรีวิว</h4>
+        <label><input type="radio" name="rt" data-f="rating" value="0" ${shopState.minRating===0?'checked':''}> ทั้งหมด</label>
+        <label><input type="radio" name="rt" data-f="rating" value="4.5" ${shopState.minRating===4.5?'checked':''}> 4.5 ขึ้นไป</label>
+        <label><input type="radio" name="rt" data-f="rating" value="4" ${shopState.minRating===4?'checked':''}> 4.0 ขึ้นไป</label>
+      </div>
+      <div class="fgroup"><button class="btn ghost sm" id="clearF" style="width:100%">ล้างตัวกรอง</button></div>
+    </aside>
+    <div>
+      <div class="searchbox">
+        <input class="field" id="q" type="search" placeholder="ค้นหา เช่น กรรไกร, mouse, ปากกา" value="${esc(shopState.q)}" aria-label="ค้นหาสินค้า">
+        <select class="field" id="sort" style="max-width:190px" aria-label="เรียงลำดับ">
+          <option value="pop" ${shopState.sort==='pop'?'selected':''}>ยอดนิยม</option>
+          <option value="new" ${shopState.sort==='new'?'selected':''}>มาใหม่</option>
+          <option value="low" ${shopState.sort==='low'?'selected':''}>ราคาต่ำ → สูง</option>
+          <option value="high" ${shopState.sort==='high'?'selected':''}>ราคาสูง → ต่ำ</option>
+          <option value="rate" ${shopState.sort==='rate'?'selected':''}>คะแนนสูงสุด</option>
+        </select>
+      </div>
+      <div id="results"></div>
+    </div>
+  </div>`;
+}
+function filtered(){
+  const q=shopState.q.trim().toLowerCase();
+  let r=P.filter(p=>{
+    if(q && !(p.name.toLowerCase().includes(q)||p.en.includes(q)||p.short.toLowerCase().includes(q)||catName(p.cat).includes(q))) return false;
+    if(shopState.cats.length && !shopState.cats.includes(p.cat)) return false;
+    if(shopState.hand!=='all' && p.hand!==shopState.hand) return false;
+    if(p.price>shopState.max) return false;
+    if(p.rating<shopState.minRating) return false;
+    return true;
+  });
+  const s=shopState.sort;
+  r.sort((a,b)=> s==='low'?a.price-b.price : s==='high'?b.price-a.price : s==='rate'?b.rating-a.rating :
+      s==='new'?(b.tags.includes('มาใหม่')?1:0)-(a.tags.includes('มาใหม่')?1:0) : b.reviews-a.reviews);
+  return r;
+}
+function drawResults(){
+  const box=document.getElementById('results'); if(!box)return;
+  const r=filtered();
+  const chips=[...shopState.cats.map(c=>['cat',c,catName(c)]),
+    shopState.hand!=='all'?['hand',shopState.hand,shopState.hand==='left'?'ถนัดซ้ายโดยเฉพาะ':'ใช้ได้สองมือ']:null,
+    shopState.minRating?['rating',shopState.minRating,shopState.minRating+' ดาวขึ้นไป']:null].filter(Boolean);
+  box.innerHTML=`<div class="toolbar"><span>พบ ${r.length} รายการ</span><div style="display:flex;gap:8px;flex-wrap:wrap">${chips.map(c=>`<button class="chip" data-chip="${c[0]}" data-val="${c[1]}">${esc(c[2])} ✕</button>`).join('')}</div></div>`
+   + (r.length?`<div class="grid-products">${r.map((p,i)=>productCard(p,i)).join('')}</div>`
+   :`<div class="empty"><p><b>ยังไม่พบสินค้าที่ตรงกับเงื่อนไขนี้</b></p><p>ลองลดตัวกรองลง หรือบอกเราว่าอยากให้หาสินค้าอะไรเข้าร้าน</p><a class="btn ghost sm" href="#/contact">แจ้งสินค้าที่อยากได้</a></div>`);
+}
+
+function pageProduct(id){
+  const p=find(id); if(!p) return notFound();
+  const related=P.filter(x=>x.id!==p.id&&(x.cat===p.cat||x.hand===p.hand)).slice(0,4);
+  const liked=wish.includes(p.id);
+  return `${crumb([['หน้าแรก','#/'],['สินค้าทั้งหมด','#/shop'],[catName(p.cat),'#/shop?cat='+p.cat],[p.name,'']])}
+  <div class="wrap pd">
+    <div class="gallery">
+      <div class="main" id="gmain">${art(p,0)}</div>
+      <div class="thumbs" role="group" aria-label="ภาพสินค้าเพิ่มเติม">
+        ${[0,1,2].map(i=>`<button data-g="${i}" aria-current="${i===0}" aria-label="ภาพที่ ${i+1}">${art(p,i)}</button>`).join('')}
+      </div>
+    </div>
+    <div>
+      <span class="badge-hand">${p.hand==='left'?'ถนัดซ้ายโดยเฉพาะ':'ใช้ได้สองมือ'}</span>
+      <h1 style="font-size:1.75rem;margin:10px 0 6px">${esc(p.name)}</h1>
+      <div class="rate" style="color:var(--ink-soft);font-size:.92rem">${stars(p.rating)} ${p.rating} · ${p.reviews} รีวิว · ${catName(p.cat)}</div>
+      <div class="price-row"><span class="price-now">${baht(p.price)}</span>${p.old?`<span class="price-old">${baht(p.old)}</span>`:''}</div>
+      <p style="color:var(--ink-soft)">${esc(p.short)}</p>
+      <p class="note">${p.stock>10?'พร้อมส่ง — เหลือ '+p.stock+' ชิ้น':p.stock>0?'เหลือน้อย เพียง '+p.stock+' ชิ้น':'สินค้าหมดชั่วคราว'}</p>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:22px 0">
+        <div class="qty" role="group" aria-label="จำนวน">
+          <button id="qm" aria-label="ลดจำนวน">−</button><span id="qv" aria-live="polite">1</span><button id="qp" aria-label="เพิ่มจำนวน">+</button>
+        </div>
+        <button class="btn accent" id="addBtn" ${p.stock===0?'disabled':''} style="flex:1;min-width:180px">ใส่ตะกร้า</button>
+        <button class="btn ghost" data-wish="${p.id}" aria-pressed="${liked}">${ic('heart',17)} ${liked?'ถูกใจแล้ว':'ถูกใจ'}</button>
+      </div>
+      <div class="leftbox">
+        <h3>${ic('hand',20)} เหมาะกับคนถนัดซ้ายอย่างไร</h3>
+        <p>${esc(p.left)}</p>
+        <div class="compare">
+          <div><h5>ของทั่วไป</h5>${esc(p.vsRight)}</div>
+          <div><h5>ชิ้นนี้</h5>${esc(p.short)}</div>
+        </div>
+      </div>
+      <p class="note">${ic('truck',15)} ส่งฟรีเมื่อสั่งครบ 800 บาท · คืนได้ภายใน 14 วัน</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="specs">รายละเอียดสินค้า</button>
+      <button role="tab" aria-selected="false" data-tab="rev">รีวิว (${p.rv.length})</button>
+      <button role="tab" aria-selected="false" data-tab="ship">การจัดส่งและการคืนสินค้า</button>
+    </div>
+    <div id="tabbody" class="prose"></div>
+
+    <section class="block">
+      <div class="sec-head"><h2>คนถนัดซ้ายที่ซื้อชิ้นนี้ มักซื้อ…</h2></div>
+      <div class="grid-products">${related.map((x,i)=>productCard(x,i)).join('')}</div>
+    </section>
+  </div>`;
+}
+function drawTab(p,name){
+  const b=document.getElementById('tabbody'); if(!b)return;
+  if(name==='specs'){
+    b.innerHTML=`<div class="overflow-x"><table class="specs"><tbody>${Object.entries(p.specs).map(([k,v])=>`<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</tbody></table></div>`;
+  }else if(name==='rev'){
+    b.innerHTML=`<div style="max-width:70ch">${p.rv.map(r=>`<div class="review"><div class="head"><span><b style="color:var(--ink)">${esc(r.name)}</b> · ${esc(r.d)}</span>${stars(r.n)}</div><p>${esc(r.txt)}</p></div>`).join('')}
+      <div style="margin-top:22px"><h3>เขียนรีวิวของคุณ</h3>
+      <div style="display:flex;gap:8px;align-items:center;margin:10px 0" id="ratePick" role="group" aria-label="ให้คะแนน">
+        ${[1,2,3,4,5].map(n=>`<button class="btn ghost sm" data-rate="${n}" aria-pressed="false">${n}★</button>`).join('')}
+      </div>
+      <textarea class="field" id="rvTxt" rows="3" placeholder="เล่าประสบการณ์ใช้งานด้วยมือซ้ายของคุณ" aria-label="ข้อความรีวิว"></textarea>
+      <button class="btn sm" id="rvSend" style="margin-top:10px">ส่งรีวิว</button></div></div>`;
+  }else{
+    b.innerHTML=`<p>กรุงเทพฯ และปริมณฑลจัดส่ง 1–2 วันทำการ ต่างจังหวัด 2–4 วันทำการ คำสั่งซื้อก่อน 14:00 น. จัดส่งภายในวันเดียวกัน</p>
+    <p>ค่าจัดส่งมาตรฐาน 40 บาท และฟรีเมื่อยอดสั่งซื้อครบ 800 บาท</p>
+    <p>คืนสินค้าได้ภายใน 14 วันหากอยู่ในสภาพเดิม และหากสินค้าไม่ตรงกับที่ระบุว่าเป็นแบบถนัดซ้าย เรารับผิดชอบค่าส่งคืนให้ทั้งหมด</p>`;
+  }
+}
+
+function pageCart(){
+  if(!cart.length) return `${crumb([['หน้าแรก','#/'],['ตะกร้าสินค้า','']])}<div class="wrap" style="padding:40px 0 80px"><div class="empty"><p><b>ยังไม่มีสินค้าในตะกร้า</b></p><p>เริ่มจากหมวดที่คนถนัดซ้ายซื้อบ่อยที่สุด คือ กรรไกรและอุปกรณ์การเขียน</p><a class="btn accent" href="#/shop">เลือกซื้อสินค้า</a></div></div>`;
+  const t=cartTotal(), s=shipping();
+  return `${crumb([['หน้าแรก','#/'],['ตะกร้าสินค้า','']])}
+  <div class="wrap cart-grid">
+    <div>
+      <h1 style="font-size:1.6rem;margin-bottom:6px">ตะกร้าสินค้า</h1>
+      <p class="note">${cartQty()} ชิ้น</p>
+      ${cart.map(l=>{const p=find(l.id);return `<div class="line">
+        <a class="pic" href="#/product/${p.id}" aria-label="${esc(p.name)}">${art(p,0)}</a>
+        <div>
+          <a class="name" href="#/product/${p.id}" style="font-weight:600">${esc(p.name)}</a>
+          <div class="note">${catName(p.cat)} · ${p.hand==='left'?'ถนัดซ้ายโดยเฉพาะ':'ใช้ได้สองมือ'}</div>
+          <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+            <div class="qty"><button data-dec="${p.id}" aria-label="ลดจำนวน">−</button><span>${l.qty}</span><button data-inc="${p.id}" aria-label="เพิ่มจำนวน">+</button></div>
+            <button class="btn ghost sm" data-del="${p.id}">นำออก</button>
+          </div>
+        </div>
+        <div style="text-align:end;font-weight:700;font-family:'IBM Plex Sans Thai'">${baht(p.price*l.qty)}</div>
+      </div>`}).join('')}
+    </div>
+    <aside class="summary">
+      <h2 style="font-size:1.15rem;margin-bottom:10px">สรุปคำสั่งซื้อ</h2>
+      <div class="row"><span>ยอดสินค้า</span><span>${baht(t)}</span></div>
+      <div class="row"><span>ค่าจัดส่ง</span><span>${s===0?'ฟรี':baht(s)}</span></div>
+      ${t<800?`<p class="note">ซื้อเพิ่มอีก ${baht(800-t)} เพื่อรับสิทธิ์ส่งฟรี</p>`:''}
+      <div class="row total"><span>รวมทั้งหมด</span><span>${baht(t+s)}</span></div>
+      <a class="btn accent" href="#/checkout" style="width:100%;margin-top:14px">ดำเนินการสั่งซื้อ</a>
+      <a class="btn ghost" href="#/shop" style="width:100%;margin-top:8px">เลือกซื้อต่อ</a>
+    </aside>
+  </div>`;
+}
+
+function pageCheckout(){
+  if(!cart.length) return pageCart();
+  const t=cartTotal(), s=shipping();
+  return `${crumb([['หน้าแรก','#/'],['ตะกร้าสินค้า','#/cart'],['ชำระเงิน','']])}
+  <div class="wrap cart-grid">
+    <form id="coForm" novalidate>
+      <h1 style="font-size:1.6rem;margin-bottom:18px">ชำระเงิน</h1>
+      <fieldset><legend>ที่อยู่จัดส่ง</legend>
+        <div class="form-grid">
+          <div><label class="lbl" for="fn">ชื่อ</label><input class="field" id="fn" required></div>
+          <div><label class="lbl" for="ln">นามสกุล</label><input class="field" id="ln" required></div>
+          <div><label class="lbl" for="tel">เบอร์โทรศัพท์</label><input class="field" id="tel" type="tel" inputmode="tel" required></div>
+          <div><label class="lbl" for="em">อีเมล</label><input class="field" id="em" type="email" required></div>
+          <div class="full"><label class="lbl" for="ad">ที่อยู่</label><input class="field" id="ad" required></div>
+          <div><label class="lbl" for="pv">จังหวัด</label><input class="field" id="pv" required></div>
+          <div><label class="lbl" for="zp">รหัสไปรษณีย์</label><input class="field" id="zp" inputmode="numeric" required></div>
+          <div class="full"><label class="lbl" for="nt">หมายเหตุถึงผู้จัดส่ง (ไม่บังคับ)</label><input class="field" id="nt" placeholder="เช่น ฝากไว้ที่นิติบุคคล"></div>
+        </div>
+      </fieldset>
+      <fieldset><legend>วิธีชำระเงิน</legend>
+        <div class="pay">
+          <label><input type="radio" name="pay" value="บัตรเครดิต/เดบิต" checked> บัตรเครดิต/เดบิต</label>
+          <label><input type="radio" name="pay" value="พร้อมเพย์"> พร้อมเพย์ (QR)</label>
+          <label><input type="radio" name="pay" value="เก็บเงินปลายทาง"> เก็บเงินปลายทาง (+20 ฿)</label>
+        </div>
+        <p class="note" style="margin-top:12px">นี่เป็นตัวอย่าง MVP ระบบจะไม่ตัดเงินจริงและไม่เก็บข้อมูลบัตร</p>
+      </fieldset>
+      <p id="coErr" class="note" role="alert" style="color:var(--accent)"></p>
+      <button class="btn accent" type="submit" style="width:100%">ยืนยันคำสั่งซื้อ ${baht(t+s)}</button>
+    </form>
+    <aside class="summary">
+      <h2 style="font-size:1.15rem;margin-bottom:10px">รายการสินค้า</h2>
+      ${cart.map(l=>{const p=find(l.id);return `<div class="row"><span style="max-width:200px">${esc(p.name)} × ${l.qty}</span><span>${baht(p.price*l.qty)}</span></div>`}).join('')}
+      <div class="row"><span>ค่าจัดส่ง</span><span>${s===0?'ฟรี':baht(s)}</span></div>
+      <div class="row total"><span>รวมทั้งหมด</span><span>${baht(t+s)}</span></div>
+    </aside>
+  </div>`;
+}
+
+const STEPS=['รับคำสั่งซื้อแล้ว','กำลังจัดเตรียมสินค้า','ส่งมอบให้ขนส่ง','กำลังนำจ่าย','จัดส่งสำเร็จ'];
+function pageTrack(params){
+  const pre=params.get('id')||'';
+  return `${crumb([['หน้าแรก','#/'],['ติดตามคำสั่งซื้อ','']])}
+  <div class="wrap" style="padding:30px 0 80px;max-width:760px">
+    <h1 style="font-size:1.6rem">ติดตามคำสั่งซื้อ</h1>
+    <p class="note">กรอกเลขคำสั่งซื้อที่ได้รับทางอีเมล เช่น LE-240001 (ตัวอย่างสำหรับทดลอง)</p>
+    <div class="searchbox" style="margin-top:18px">
+      <input class="field" id="oid" placeholder="LE-240001" value="${esc(pre)}" aria-label="เลขคำสั่งซื้อ">
+      <button class="btn" id="trackBtn">ติดตามสถานะ</button>
+    </div>
+    <div id="trackOut"></div>
+    ${orders.length?`<h2 style="font-size:1.1rem;margin-top:34px">คำสั่งซื้อล่าสุดของคุณ</h2>
+      <ul style="list-style:none;padding:0">${orders.slice().reverse().map(o=>`<li style="border-bottom:1px solid var(--line);padding:12px 0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span><b>${esc(o.id)}</b> · ${esc(o.date)}</span><span>${baht(o.total)} <a href="#/track?id=${o.id}">ดูสถานะ</a></span></li>`).join('')}</ul>`:''}
+  </div>`;
+}
+function drawTrack(id){
+  const out=document.getElementById('trackOut'); if(!out)return;
+  const key=(id||'').trim().toUpperCase();
+  if(!key){out.innerHTML='';return}
+  const o=orders.find(x=>x.id===key);
+  const demo=key==='LE-240001';
+  if(!o&&!demo){out.innerHTML=`<div class="empty"><p><b>ไม่พบคำสั่งซื้อหมายเลขนี้</b></p><p>ตรวจสอบตัวสะกดอีกครั้ง หรือลองใช้เลขตัวอย่าง LE-240001</p></div>`;return}
+  const stage=demo?3:(o.stage||1);
+  const total=demo?1580:o.total;
+  out.innerHTML=`<div style="background:var(--surface);border-radius:var(--r-md);padding:22px;margin-top:8px">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div><b style="font-family:'IBM Plex Sans Thai';font-size:1.1rem">${esc(key)}</b><div class="note">ยอดรวม ${baht(total)} · ขนส่ง Flash Express</div></div>
+      <span class="badge-hand">${esc(STEPS[stage])}</span>
+    </div>
+    <ol class="timeline">${STEPS.map((s,i)=>`<li class="${i<=stage?'done':''}"><span class="dot">${i<=stage?ic('check',14):''}</span><div><b>${esc(s)}</b><br><small>${i<=stage?'อัปเดตแล้ว':'รอดำเนินการ'}</small></div></li>`).join('')}</ol>
+  </div>`;
+}
+
+function pageCommunity(){
+  return `${crumb([['หน้าแรก','#/'],['บทความ & ชุมชน','']])}
+  <div class="wrap" style="padding:30px 0 70px">
+    <div class="sec-head"><h1 style="font-size:1.75rem">บทความและชุมชนคนถนัดซ้าย</h1><p>ความรู้จากประสบการณ์จริง เขียนโดยทีมงานและสมาชิกที่ถนัดซ้าย</p></div>
+    <div class="arts">${ARTICLES.map(a=>`<article class="art"><div class="cover">${ic(a.icon,52)}</div><div class="body"><span class="kicker">${esc(a.kicker)}</span><h3><a href="#/article/${a.id}" style="color:var(--ink)">${esc(a.title)}</a></h3><p>${esc(a.excerpt)}</p></div></article>`).join('')}</div>
+  </div>`;
+}
+function pageArticle(id){
+  const a=ARTICLES.find(x=>x.id===id); if(!a) return notFound();
+  return `${crumb([['หน้าแรก','#/'],['บทความ & ชุมชน','#/community'],[a.title,'']])}
+  <article class="wrap prose" style="padding:26px 0 70px">
+    <span class="kicker" style="color:var(--accent);font-weight:600">${esc(a.kicker)}</span>
+    <h1 style="font-size:1.9rem;margin:8px 0 14px">${esc(a.title)}</h1>
+    <p style="color:var(--ink-soft);font-size:1.05rem">${esc(a.excerpt)}</p>
+    ${a.body}
+    <p style="margin-top:30px"><a class="btn ghost sm" href="#/community">← บทความอื่น</a></p>
+  </article>`;
+}
+function pageWishlist(){
+  const items=wish.map(find).filter(Boolean);
+  return `${crumb([['หน้าแรก','#/'],['รายการที่ถูกใจ','']])}
+  <div class="wrap" style="padding:26px 0 70px">
+    <h1 style="font-size:1.6rem;margin-bottom:18px">รายการที่ถูกใจ</h1>
+    ${items.length?`<div class="grid-products">${items.map((p,i)=>productCard(p,i)).join('')}</div>`
+    :`<div class="empty"><p><b>ยังไม่มีสินค้าที่ถูกใจ</b></p><p>กดรูปหัวใจบนสินค้าเพื่อเก็บไว้ดูทีหลัง</p><a class="btn accent" href="#/shop">เลือกซื้อสินค้า</a></div>`}
+  </div>`;
+}
+function pageAbout(){
+  return `${crumb([['หน้าแรก','#/'],['เกี่ยวกับเรา','']])}
+  <div class="wrap prose" style="padding:26px 0 70px">
+    <h1 style="font-size:1.9rem;margin-bottom:12px">เรื่องราวของ LeftEase</h1>
+    <p>LeftEase เริ่มจากคำถามง่าย ๆ ว่าทำไมการหาซื้อกรรไกรถนัดซ้ายในไทยถึงยากขนาดนี้ สินค้าที่มีอยู่กระจายอยู่หลายร้าน ใช้คำเรียกไม่เหมือนกัน และหลายชิ้นเขียนว่า "ถนัดซ้าย" ทั้งที่เปลี่ยนแค่รูปด้ามจับ</p>
+    <p>เราจึงสร้างร้านที่ทำหน้าที่คัดกรองแทนลูกค้า ทีมงานที่ถนัดซ้ายจะทดลองใช้สินค้าก่อนรับเข้าร้าน และเขียนอธิบายว่าชิ้นนั้นแก้ปัญหาอะไร ต่างจากของทั่วไปตรงไหน</p>
+    <h3>สิ่งที่เรายึดถือ</h3>
+    <ul>
+      <li>ระบุให้ชัดเสมอว่าสินค้าเป็นแบบถนัดซ้ายแท้หรือใช้ได้สองมือ</li>
+      <li>ไม่ใช้คำโฆษณาเกินจริงเพื่อขายของที่ใช้ไม่ได้จริง</li>
+      <li>รับฟังคำขอจากสมาชิกว่าอยากให้หาสินค้าอะไรเข้าร้าน</li>
+      <li>ออกแบบเว็บไซต์ให้ใช้งานได้ด้วยคีย์บอร์ดและโปรแกรมอ่านหน้าจอ ตามแนวทาง WCAG 2.1 ระดับ AA</li>
+    </ul>
+    <h3>แผนถัดไป</h3>
+    <p>ระยะแรกเราเน้นอุปกรณ์การเรียนและเครื่องเขียนซึ่งอธิบายคุณค่าได้ง่ายที่สุด จากนั้นจะเปิดรับร้านค้าพันธมิตรเข้ามาขายบนแพลตฟอร์ม และพัฒนาระบบแนะนำสินค้าเฉพาะบุคคลจากพฤติกรรมการค้นหาจริง</p>
+    <p><a class="btn accent" href="#/shop">ดูสินค้าที่เราคัดมาแล้ว</a></p>
+  </div>`;
+}
+function pageFaq(){
+  return `${crumb([['หน้าแรก','#/'],['คำถามที่พบบ่อย','']])}
+  <div class="wrap" style="padding:26px 0 70px;max-width:760px">
+    <h1 style="font-size:1.75rem;margin-bottom:14px">คำถามที่พบบ่อย</h1>
+    ${FAQS.map(([q,a])=>`<details class="faq"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}
+    <p style="margin-top:26px">ไม่เจอคำตอบที่ต้องการ? <a href="#/contact">ส่งคำถามมาหาเรา</a></p>
+  </div>`;
+}
+function pageContact(){
+  return `${crumb([['หน้าแรก','#/'],['ติดต่อเรา','']])}
+  <div class="wrap" style="padding:26px 0 70px;max-width:760px">
+    <h1 style="font-size:1.75rem">ติดต่อเรา</h1>
+    <p class="note">ตอบกลับภายใน 1 วันทำการ จันทร์–ศุกร์ 9:00–18:00 น.</p>
+    <form id="ctForm" style="margin-top:20px">
+      <div class="form-grid">
+        <div><label class="lbl" for="cn">ชื่อ</label><input class="field" id="cn" required></div>
+        <div><label class="lbl" for="ce">อีเมล</label><input class="field" id="ce" type="email" required></div>
+        <div class="full"><label class="lbl" for="ct">เรื่องที่ต้องการติดต่อ</label>
+          <select class="field" id="ct"><option>สอบถามสินค้า</option><option>ขอให้หาสินค้าเข้าร้าน</option><option>สั่งซื้อจำนวนมาก / โรงเรียน-องค์กร</option><option>ปัญหาคำสั่งซื้อ</option><option>อื่น ๆ</option></select></div>
+        <div class="full"><label class="lbl" for="cm">ข้อความ</label><textarea class="field" id="cm" rows="5" required></textarea></div>
+      </div>
+      <button class="btn accent" type="submit" style="margin-top:16px">ส่งข้อความ</button>
+    </form>
+  </div>`;
+}
+function pageThanks(oid){
+  const o=orders.find(x=>x.id===oid);
+  return `<div class="wrap" style="padding:60px 0 90px;max-width:620px;text-align:center">
+    <div style="width:64px;height:64px;border-radius:99px;background:var(--mint);color:var(--primary);display:grid;place-items:center;margin:0 auto 18px">${ic('check',30)}</div>
+    <h1 style="font-size:1.7rem">ยืนยันคำสั่งซื้อแล้ว</h1>
+    <p>เราส่งรายละเอียดไปที่อีเมลของคุณแล้ว เลขคำสั่งซื้อคือ <b>${esc(oid)}</b></p>
+    ${o?`<p class="note">ยอดรวม ${baht(o.total)} · จัดส่งภายใน 1–4 วันทำการ</p>`:''}
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px">
+      <a class="btn accent" href="#/track?id=${oid}">ติดตามสถานะ</a>
+      <a class="btn ghost" href="#/shop">เลือกซื้อต่อ</a>
+    </div>
+  </div>`;
+}
+function notFound(){
+  return `<div class="wrap" style="padding:70px 0 90px"><div class="empty"><p><b>ไม่พบหน้าที่คุณกำลังหา</b></p><p>ลองกลับไปเริ่มจากหน้าแรกหรือหน้าสินค้าทั้งหมด</p><a class="btn accent" href="#/">กลับหน้าแรก</a></div></div>`;
+}
+
+/* ============ ROUTER ============ */
+function render(){
+  const raw=location.hash.replace(/^#/,'')||'/';
+  const [path,qs]=raw.split('?');
+  const params=new URLSearchParams(qs||'');
+  const seg=path.split('/').filter(Boolean);
+  const main=document.getElementById('main');
+  let html='', route=seg[0]||'home';
+
+  if(!seg.length) html=pageHome();
+  else if(route==='shop') html=pageShop(params);
+  else if(route==='product') html=pageProduct(seg[1]);
+  else if(route==='cart') html=pageCart();
+  else if(route==='checkout') html=pageCheckout();
+  else if(route==='track') html=pageTrack(params);
+  else if(route==='community') html=pageCommunity();
+  else if(route==='article') html=pageArticle(seg[1]);
+  else if(route==='wishlist') html=pageWishlist();
+  else if(route==='about') html=pageAbout();
+  else if(route==='faq') html=pageFaq();
+  else if(route==='contact') html=pageContact();
+  else if(route==='thanks') html=pageThanks(seg[1]);
+  else html=notFound();
+
+  main.innerHTML=html;
+  document.querySelectorAll('.nav a').forEach(a=>{
+    const t=a.getAttribute('href').replace('#','').split('?')[0];
+    if(t===('/'+(seg[0]||''))||(t==='/'&&!seg.length)) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+  });
+  document.getElementById('mainnav').classList.remove('open');
+  document.getElementById('menuBtn').setAttribute('aria-expanded','false');
+  syncBadges();
+  afterRender(route,seg,params);
+  window.scrollTo({top:0,behavior:'instant'});
+}
+function afterRender(route,seg,params){
+  if(route==='shop'){
+    drawResults();
+    const q=document.getElementById('q');
+    q.addEventListener('input',e=>{shopState.q=e.target.value;drawResults()});
+    document.getElementById('sort').addEventListener('change',e=>{shopState.sort=e.target.value;drawResults()});
+    document.querySelectorAll('[data-f]').forEach(el=>{
+      el.addEventListener('change',e=>{
+        const f=el.dataset.f;
+        if(f==='cat'){ const v=el.value; if(el.checked) shopState.cats.push(v); else shopState.cats=shopState.cats.filter(c=>c!==v) }
+        if(f==='hand') shopState.hand=el.value;
+        if(f==='rating') shopState.minRating=parseFloat(el.value);
+        if(f==='max'){ shopState.max=parseInt(el.value); document.getElementById('priceOut').textContent=baht(shopState.max) }
+        drawResults();
+      });
+    });
+    document.getElementById('clearF').addEventListener('click',()=>{shopState={q:'',cats:[],hand:'all',max:1500,sort:'pop',minRating:0};render()});
+  }
+  if(route==='product'){
+    const p=find(seg[1]); if(!p)return;
+    let qty=1;
+    const qv=document.getElementById('qv');
+    document.getElementById('qp').onclick=()=>{qty=Math.min(qty+1,Math.max(p.stock,1));qv.textContent=qty};
+    document.getElementById('qm').onclick=()=>{qty=Math.max(1,qty-1);qv.textContent=qty};
+    document.getElementById('addBtn').onclick=()=>addToCart(p.id,qty);
+    document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{
+      document.getElementById('gmain').innerHTML=art(p,parseInt(b.dataset.g));
+      document.querySelectorAll('[data-g]').forEach(x=>x.setAttribute('aria-current',x===b));
+    });
+    drawTab(p,'specs');
+    document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{
+      document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-selected',x===b));
+      drawTab(p,b.dataset.tab);
+    });
+  }
+  if(route==='checkout'){
+    document.getElementById('coForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const ids=['fn','ln','tel','em','ad','pv','zp'];
+      const missing=ids.filter(i=>!document.getElementById(i).value.trim());
+      const err=document.getElementById('coErr');
+      if(missing.length){err.textContent='กรอกข้อมูลให้ครบก่อนยืนยันคำสั่งซื้อ ยังขาด '+missing.length+' ช่อง';document.getElementById(missing[0]).focus();return}
+      const pay=document.querySelector('input[name=pay]:checked').value;
+      const id='LE-'+String(240100+orders.length+Math.floor(Math.random()*400));
+      orders.push({id,total:cartTotal()+shipping()+(pay==='เก็บเงินปลายทาง'?20:0),date:new Date().toLocaleDateString('th-TH'),stage:1,pay});
+      store.set('orders',orders);
+      cart=[];saveCart();
+      location.hash='#/thanks/'+id;
+    });
+  }
+  if(route==='track'){
+    const go=()=>drawTrack(document.getElementById('oid').value);
+    document.getElementById('trackBtn').onclick=go;
+    document.getElementById('oid').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go()}});
+    if(params.get('id')) drawTrack(params.get('id'));
+  }
+  if(route==='contact'){
+    document.getElementById('ctForm').addEventListener('submit',e=>{e.preventDefault();toast('ส่งข้อความแล้ว เราจะตอบกลับภายใน 1 วันทำการ');e.target.reset()});
+  }
+}
+
+/* ============ GLOBAL EVENTS ============ */
+document.addEventListener('click',e=>{
+  const add=e.target.closest('[data-add]'); if(add){addToCart(add.dataset.add);return}
+  const w=e.target.closest('[data-wish]'); if(w){toggleWish(w.dataset.wish);return}
+  const inc=e.target.closest('[data-inc]'); if(inc){const l=cart.find(x=>x.id===inc.dataset.inc);l.qty++;saveCart();render();return}
+  const dec=e.target.closest('[data-dec]'); if(dec){const l=cart.find(x=>x.id===dec.dataset.dec);l.qty--;if(l.qty<1)cart=cart.filter(x=>x.id!==dec.dataset.dec);saveCart();render();return}
+  const del=e.target.closest('[data-del]'); if(del){cart=cart.filter(x=>x.id!==del.dataset.del);saveCart();render();toast('นำสินค้าออกจากตะกร้าแล้ว');return}
+  const chip=e.target.closest('[data-chip]'); if(chip){
+    const k=chip.dataset.chip,v=chip.dataset.val;
+    if(k==='cat') shopState.cats=shopState.cats.filter(c=>c!==v);
+    if(k==='hand') shopState.hand='all';
+    if(k==='rating') shopState.minRating=0;
+    render();return;
+  }
+  const rp=e.target.closest('[data-rate]'); if(rp){document.querySelectorAll('[data-rate]').forEach(b=>b.setAttribute('aria-pressed',b===rp));return}
+  if(e.target.closest('#rvSend')){
+    const t=document.getElementById('rvTxt');
+    if(!t.value.trim()){toast('เขียนข้อความรีวิวก่อนส่ง');t.focus();return}
+    toast('ขอบคุณสำหรับรีวิว ระบบจะแสดงหลังตรวจสอบ');t.value='';
+  }
+});
+document.getElementById('menuBtn').addEventListener('click',()=>{
+  const n=document.getElementById('mainnav'), open=n.classList.toggle('open');
+  document.getElementById('menuBtn').setAttribute('aria-expanded',open);
+});
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  const cur=document.documentElement.getAttribute('data-theme');
+  const next=cur==='dark'?'light':cur==='light'?'dark':(window.matchMedia('(prefers-color-scheme: dark)').matches?'light':'dark');
+  document.documentElement.setAttribute('data-theme',next);
+  store.set('theme',next);
+});
+(function initTheme(){const t=store.get('theme',null);if(t)document.documentElement.setAttribute('data-theme',t)})();
+window.addEventListener('hashchange',render);
+render();
+</script>
+</body>
+</html>
