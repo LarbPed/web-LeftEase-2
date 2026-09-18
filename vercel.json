@@ -1,0 +1,7 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/leftease", "destination": "/index.html" },
+    { "source": "/leftease.html", "destination": "/index.html" }
+  ]
+}
