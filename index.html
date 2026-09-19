@@ -98,7 +98,9 @@ header.site{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--
 .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:64px 0 60px}
 @media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:32px;padding:44px 0}}
 .hero .eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--mint);color:var(--primary-dark);padding:6px 13px;border-radius:99px;font-size:.85rem;font-weight:600;margin-bottom:18px}
-.hero h1 .flip{display:inline-block;transform:scaleX(-1);color:var(--accent)}
+.hero h1 .flip{display:inline-block;color:var(--accent);transform-style:preserve-3d;animation:flipSpin 4.5s linear infinite;transform-origin:center center}
+.hero h1 .flip:hover{animation-play-state:paused}
+@keyframes flipSpin{from{transform:perspective(400px) rotateY(0deg)}to{transform:perspective(400px) rotateY(-360deg)}}
 .hero-lead{font-size:1.1rem;color:var(--ink-soft);max-width:46ch}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
 .hero-stats{display:flex;gap:28px;margin-top:38px;flex-wrap:wrap}
@@ -281,11 +283,12 @@ footer.site a,footer.site p{font-size:.9rem;color:var(--ink-soft)}
 #toast{position:fixed;inset-inline-end:20px;bottom:20px;z-index:120;display:flex;flex-direction:column;gap:10px}
 .toast{background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:var(--r-sm);box-shadow:var(--shadow);font-size:.92rem;display:flex;gap:10px;align-items:center}
 :root:not([data-theme="light"]) .toast{background:var(--primary);color:#062126}
+@media (prefers-reduced-motion:reduce){
+  .hero h1 .flip{animation:none;transform:scaleX(-1)}
+}
 @media (prefers-reduced-motion:no-preference){
   .toast{animation:pop .25s ease-out}
   @keyframes pop{from{opacity:0;transform:translateY(8px)}}
-  .hero h1 .flip{animation:flipin .9s .25s ease-out both}
-  @keyframes flipin{from{transform:scaleX(1);opacity:.35}to{transform:scaleX(-1);opacity:1}}
 }
 .crumb{font-size:.86rem;color:var(--ink-soft);padding-top:18px}
 .badge-hand{display:inline-block;font-size:.78rem;padding:3px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
